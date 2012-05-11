@@ -55,14 +55,18 @@ public class Main {
 	public static void main(String argv[]) {
 		// Lets make sure that input and output files are provided on the
 		// command line
-
-		if (argv.length != 2) {
-
-			System.out
-					.println("\n\nNombre incorrect de parametres d'entree. Utilisation:");
-			System.out
-					.println("\njava Main <fichier d'entree> <fichier de sortie>");
-
+		String severityLineRemover = "";
+		String fileWriterOutputName = "";
+		if (argv.length != 2) {	
+			if (argv.length == 4) {
+				fileWriterOutputName = argv[2];
+				severityLineRemover = argv[3];	    
+			}else {
+				System.out
+						.println("\n\nNombre incorrect de parametres d'entree. Utilisation:");
+				System.out
+						.println("\njava Main <fichier d'entree> <fichier de sortie>");
+			}
 		} else {
 			// These are the declarations for the pipes.
 			PipedWriter pipe01 = new PipedWriter();
