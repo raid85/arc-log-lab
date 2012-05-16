@@ -1,7 +1,6 @@
 package ca.etsmtl.log430.lab1;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.*;
 
 /**************************************************************************************
  ** Class name: FormatFilter
@@ -72,9 +71,9 @@ public class FormatFilter extends Thread {
 
 		// Declarations
 		
-		Pattern patternStatus    = Pattern.compile("[0-9]{4}");
-		Pattern patternSeverity  = Pattern.compile("\\w+");
-		Pattern patternType      = Pattern.compile("");
+		Pattern patternStatus    = Pattern.compile("[A-Z]{3}\\s"); // Take the 3rd Match
+		Pattern patternSeverity  = Pattern.compile("[A-Z]{3}\\s"); // Take the 2nd Match
+		Pattern patternType      = Pattern.compile("[A-Z]{3}\\s"); // Take the 1st Match
 		Pattern patternNumBillet = Pattern.compile("[0-9]{4}");
 
 		char[] CharacterValue = new char[1];
