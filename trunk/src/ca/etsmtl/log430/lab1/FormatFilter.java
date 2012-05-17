@@ -39,7 +39,6 @@ public class FormatFilter extends Thread {
 
 	PipedReader InputPipe = new PipedReader();
 	PipedWriter OutputPipe1 = new PipedWriter();
-	PipedWriter OutputPipe2 = new PipedWriter();
 
 	public FormatFilter(PipedWriter InputPipe, PipedWriter OutputPipe1, PipedWriter OutputPipe2) {
 
@@ -53,7 +52,6 @@ public class FormatFilter extends Thread {
 			// Connect OutputPipes
 
 			this.OutputPipe1 = OutputPipe1;
-			this.OutputPipe2 = OutputPipe2;
 			System.out.println("FormattageFilter:: connected to downstream filters.");
 
 		} catch (Exception Error) {
@@ -109,18 +107,7 @@ public class FormatFilter extends Thread {
 							OutputPipe1
 									.write(LineOfText, 0, LineOfText.length());
 							OutputPipe1.flush();
-						} else if(LineOfText.indexOf(" AME ") != -1) {
-
-							System.out.println("FormattageFilter:: sending: "
-									+ LineOfText + " to output pipe 2 (AME).");
-							LineOfText += new String(CharacterValue);
-							OutputPipe2
-									.write(LineOfText, 0, LineOfText.length());
-							OutputPipe2.flush();
- 						} // if
-
-						LineOfText = "";
-
+						}
 					} else {
 
 						LineOfText += new String(CharacterValue);
@@ -143,7 +130,6 @@ public class FormatFilter extends Thread {
 			System.out.println("FormattageFilter:: input pipe closed.");
 
 			OutputPipe1.close();
-			OutputPipe2.close();
 			System.out.println("FormattageFilter:: output pipes closed.");
 
 		} catch (Exception Error) {
