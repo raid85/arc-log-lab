@@ -87,12 +87,16 @@ public class Main {
 			// Instantiate the Course Filter Threads
 			Thread KeywordFilter1 = new SeverityFilter("CRI", pipe02, pipe04);
 			Thread KeywordFilter2 = new SeverityFilter("MAJ", pipe03, pipe05);
-
 			
 			// Instantiate the Merge Filter Thread
 			Thread MergeFilter1 = new MergeFilter(pipe04, pipe05, pipe06);
-
-			Thread SeverityLineRemover1 = new SeverityLineRemover(severityLineRemover,pipe06, pipe07);
+			
+			//FILTRE @ NICO
+			//Thread SeverityLineRemover1 = new SeverityLineRemover(severityLineRemover,pipe06, pipe07);
+			
+			Thread FormatFilter = new FormatFilter(pipe06, pipe07);
+			
+			
 			// Instantiate the FileWriter Filter Thread
 			Thread FileWriterFilter1 = new FileWriterFilter(argv[1], pipe07);
 
@@ -102,7 +106,8 @@ public class Main {
 			KeywordFilter1.start();
 			KeywordFilter2.start();
 			MergeFilter1.start();
-			SeverityLineRemover1.start();
+			//SeverityLineRemover1.start();
+			FormatFilter.start();
 			FileWriterFilter1.start();
 		}  // if
 		
