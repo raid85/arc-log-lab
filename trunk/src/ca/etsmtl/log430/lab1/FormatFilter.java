@@ -38,25 +38,25 @@ public class FormatFilter extends Thread {
 	boolean Done;
 
 	PipedReader InputPipe = new PipedReader();
-	PipedWriter OutputPipe1 = new PipedWriter();
+	PipedWriter OutputPipe = new PipedWriter();
 
-	public FormatFilter(PipedWriter InputPipe, PipedWriter OutputPipe1, PipedWriter OutputPipe2) {
+	public FormatFilter(PipedWriter InputPipe, PipedWriter OutputPipe) {
 
 		try {
 
 			// Connect inputPipe
 
 			this.InputPipe.connect(InputPipe);
-			System.out.println("FormattageFilter:: connected to upstream filter.");
+			System.out.println("FormatFilter:: connected to upstream filter.");
 
 			// Connect OutputPipes
 
-			this.OutputPipe1 = OutputPipe1;
-			System.out.println("FormattageFilter:: connected to downstream filters.");
+			this.OutputPipe = OutputPipe;
+			System.out.println("FormatFilter:: connected to downstream filters.");
 
 		} catch (Exception Error) {
 
-			System.out.println("FormattageFilter:: Error connecting to other filters.");
+			System.out.println("FormatFilter:: Error connecting to other filters.");
 
 		} // try/catch
 
@@ -75,6 +75,7 @@ public class FormatFilter extends Thread {
 		Matcher matcherNB ;
 		String unsdata[] = new String [4];
 		String sdata[] = new String [4];
+		boolean isComplete = false ;
 
 		char[] CharacterValue = new char[1];
 		// char array is required to turn char into a string
@@ -86,8 +87,8 @@ public class FormatFilter extends Thread {
 
 			Done = false;
 
-			while (!Done) {
-
+			while (!Done) {				
+				
 				IntegerCharacter = InputPipe.read();
 				CharacterValue[0] = (char) IntegerCharacter;
 
@@ -99,66 +100,79 @@ public class FormatFilter extends Thread {
 
 					if (IntegerCharacter == '\n') { // end of line
 
-						System.out.println("FormattageFilter:: received: " + LineOfText);
+						System.out.println("FormatFilter received: " + LineOfText);	
 						
-						//--------DEBUT DU TRAITEMENT--------//
-						//Association des matcher a la ligne de texte recue en parametre
-						
-						matcherC = patternC.matcher(LineOfText);
-						matcherNB = patternNB.matcher(LineOfText);
-						
-						//Boucle permettant de remplir le tableau de char intialise anterieurement						
-						
-						for(int i = 0 ; matcherC.find() ;i++){
-							
-							unsdata[i] = matcherC.group();
-							System.out.println(unsdata[i]);
-						}
-						
-							matcherNB.find();
-							unsdata[3] = matcherNB.group();
-							System.out.println(unsdata[3]);
-							
-						// Placer les infos en ordre
-							sdata[0] = unsdata[2] ;
-							sdata[1] = unsdata[1] ;
-							sdata[2] = unsdata [0] ;
-							sdata [3] = unsdata [3] ;
-							
-							String result = (sdata[0].toString()+sdata[1].toString()+sdata[2].toString()+sdata[3].toString());
-							
-							LineOfText = result ;
-
-						
-
-							System.out.println("FormattageFilter:: sending: " + LineOfText) ;						
-							OutputPipe1.write(LineOfText, 0, LineOfText.length());
-							OutputPipe1.flush();
-							
-					}
-				
-
+						isComplete = true ;
+					
+				} else {
+					LineOfText += new String(CharacterValue);
+				}
 				} // if
+				
+				if (isComplete){
+					isComplete =false ;
+					//--------DEBUT DU TRAITEMENT--------//
+					//Association des matcher a la ligne de texte recue en parametre
+					
+					matcherC = patternC.matcher(LineOfText);
+					matcherNB = patternNB.matcher(LineOfText);
+					
+					//Boucle permettant de remplir le tableau de char intialise anterieurement						
+					
+					for(int i = 0 ; matcherC.find() && i<3 ;i++){						
+						unsdata[i] = matcherC.group();
+						
+					}
+					
+						matcherNB.find();
+						unsdata[3] = matcherNB.group();
+						
+						
+					// Placer les infos en ordre
+						sdata[0] = unsdata[2] ;
+						sdata[1] = unsdata[1] ;
+						sdata[2] = unsdata [0] ;
+						sdata [3] = unsdata [3] ;
+						
+						String result = (sdata[0].toString()+sdata[1].toString()+sdata[2].toString()+sdata[3].toString());
+						
+						LineOfText = result+"\n" ;						
+						
+						try {
+							System.out.println("FormatFilter:: sending: " + LineOfText) ;							
+							
+							OutputPipe.write(LineOfText, 0, LineOfText.length());
+							OutputPipe.flush();
+							}
+						 catch (Exception IOError) {
+							
+							System.out.println("FormatFilter : Write Error."+ IOError+LineOfText);
+						} // try/catch
+						 LineOfText = "";						
+						
+						
+					
+				}
 
 			} // while
 
 		} catch (Exception Error) {
 
-			System.out.println("FormattageFilter:: Interrupted.");
+			System.out.println("FormatFilter:: Interrupted."+Error);
 
 		} // try/catch
 
 		try {
 
 			InputPipe.close();
-			System.out.println("FormattageFilter:: input pipe closed.");
+			System.out.println("FormatFilter:: input pipe closed.");
 
-			OutputPipe1.close();
-			System.out.println("FormattageFilter:: output pipes closed.");
+			OutputPipe.close();
+			System.out.println("FormatFilter:: output pipe closed.");
 
 		} catch (Exception Error) {
 
-			System.out.println("FormattageFilter:: Error closing pipes.");
+			System.out.println("FormatFilter:: Error closing pipe.");
 
 		} // try/catch
 
