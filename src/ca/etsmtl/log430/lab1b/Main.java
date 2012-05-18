@@ -85,8 +85,8 @@ public class Main {
 			Thread LanguageFilter1 = new TypeFilter(pipe01, pipe02, pipe03);
 
 			// Instantiate the Course Filter Threads
-			Thread KeywordFilter1 = new SeverityFilter("CRI", pipe02, pipe04);
-			Thread KeywordFilter2 = new SeverityFilter("MAJ", pipe03, pipe05);
+			Thread KeywordFilter1 = new SeverityFilter("CRI", "MAJ", pipe02, pipe04);
+			Thread KeywordFilter2 = new SeverityFilter("MAJ", "NOR", pipe03, pipe05);
 
 			
 			// Instantiate the Merge Filter Thread

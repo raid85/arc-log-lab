@@ -54,33 +54,35 @@ public class SeverityFilter extends Thread {
 
 	boolean Done;
 
-	String severity;
+	String severity1,
+		   severity2;
 	PipedReader inputPipe = new PipedReader();
 	PipedWriter outputPipe = new PipedWriter();
 
-	public SeverityFilter(String severity, PipedWriter inputPipe,
+	public SeverityFilter(String severity1, String severity2, PipedWriter inputPipe,
 			PipedWriter outputPipe) {
 
-		this.severity = severity;
+		this.severity1 = severity1;
+		this.severity2 = severity2;
 
 		try {
 
 			// Connect inputPipe to Main
 
 			this.inputPipe.connect(inputPipe);
-			System.out.println("SeverityFilter " + severity
-					+ ":: connected to upstream filter.");
+			System.out.println("SeverityFilter " + severity1 + " OR "
+					+ severity2 + ":: connected to upstream filter.");
 
 			// Connect outputPipe to Merge
 
 			this.outputPipe = outputPipe;
-			System.out.println("SeverityFilter " + severity
-					+ ":: connected to downstream filter.");
+			System.out.println("SeverityFilter " + severity1 + " OR "
+					+ severity2 + ":: connected to downstream filter.");
 
 		} catch (Exception Error) {
 
-			System.out.println("SeverityFilter " + severity
-					+ ":: Error connecting to other filters.");
+			System.out.println("SeverityFilter " + severity1 + " OR "
+					+ severity2+ ":: Error connecting to other filters.");
 
 		} // try/catch
 
@@ -115,20 +117,32 @@ public class SeverityFilter extends Thread {
 
 					if (IntegerCharacter == '\n') { // end of line
 
-						System.out.println("SeverityFilter " + severity
-								+ ":: received: " + LineOfText + ".");
+						System.out.println("SeverityFilter " + severity1 + " OR "
+								+ severity2 + ":: received: " + LineOfText + ".");
+						
+						if (LineOfText.indexOf(" DEF ") != -1 && ((LineOfText.indexOf(severity1) != -1 ||
+								LineOfText.indexOf(severity2) != -1) && LineOfText.indexOf(" NOU ") != -1)) {
 
-						if (LineOfText.indexOf(severity) != -1) {
-
-							System.out.println("SeverityFilter "
-									+ severity + ":: sending: "
+							System.out.println("SeverityFilter " + severity1 + " OR "
+									+ severity2 + ":: sending: "
 									+ LineOfText + " to output pipe.");
 							LineOfText += new String(CharacterValue);
 							outputPipe
 									.write(LineOfText, 0, LineOfText.length());
 							outputPipe.flush();
 
-						} // if
+						} else if(LineOfText.indexOf(" AME ") != -1 && ((LineOfText.indexOf(severity1) != -1 ||
+								LineOfText.indexOf(severity2) != -1) && LineOfText.indexOf(" RES ") == -1)){
+						
+							System.out.println("SeverityFilter " + severity1 + " OR "
+									+ severity2 + ":: sending: "
+									+ LineOfText + " to output pipe.");
+							LineOfText += new String(CharacterValue);
+							outputPipe
+									.write(LineOfText, 0, LineOfText.length());
+							outputPipe.flush();
+							
+						}
 
 						LineOfText = "";
 
@@ -144,25 +158,25 @@ public class SeverityFilter extends Thread {
 
 		} catch (Exception Error) {
 
-			System.out.println("SeverityFilter::" + severity
-					+ " Interrupted.");
+			System.out.println("SeverityFilter::" + severity1 + " OR "
+					+ severity2	+ " Interrupted.");
 
 		} // try/catch
 
 		try {
 
 			inputPipe.close();
-			System.out.println("SeverityFilter " + severity
-					+ ":: input pipe closed.");
+			System.out.println("SeverityFilter " + severity1 + " OR "
+					+ severity2	+ ":: input pipe closed.");
 
 			outputPipe.close();
-			System.out.println("SeverityFilter " + severity
-					+ ":: output pipe closed.");
+			System.out.println("SeverityFilter " + severity1 + " OR "
+					+ severity2 + ":: output pipe closed.");
 
 		} catch (Exception Error) {
 
-			System.out.println("SeverityFilter " + severity
-					+ ":: Error closing pipes.");
+			System.out.println("SeverityFilter " + severity1 + " OR "
+					+ severity2	+ ":: Error closing pipes.");
 
 		} // try/catch
 
