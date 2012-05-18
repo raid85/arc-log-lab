@@ -69,10 +69,12 @@ public class FormatFilter extends Thread {
 
 		// Declarations
 		
-		Pattern patternStatus    = Pattern.compile("[A-Z]{3}\\s"); // Take the 3rd Match
-		Pattern patternSeverity  = Pattern.compile("[A-Z]{3}\\s"); // Take the 2nd Match
-		Pattern patternType      = Pattern.compile("[A-Z]{3}\\s"); // Take the 1st Match
-		Pattern patternNumBillet = Pattern.compile("[0-9]{4}");
+		Pattern patternC   = Pattern.compile("[A-Z]{3}\\s"); // Take the 3rd Match
+		Pattern patternNB = Pattern.compile("[0-9]{4}");
+		Matcher matcherC ;
+		Matcher matcherNB ;
+		String unsdata[] = new String [4];
+		String sdata[] = new String [4];
 
 		char[] CharacterValue = new char[1];
 		// char array is required to turn char into a string
@@ -97,22 +99,44 @@ public class FormatFilter extends Thread {
 
 					if (IntegerCharacter == '\n') { // end of line
 
-						System.out.println("FormattageFilter:: received: " + LineOfText + ".");
-
-						if (LineOfText.indexOf(" DEF ") != -1) {
-
-							System.out.println("FormattageFilter:: sending: "
-									+ LineOfText + " to output pipe 1 (DEF).");
-							LineOfText += new String(CharacterValue);
-							OutputPipe1
-									.write(LineOfText, 0, LineOfText.length());
-							OutputPipe1.flush();
+						System.out.println("FormattageFilter:: received: " + LineOfText);
+						
+						//--------DEBUT DU TRAITEMENT--------//
+						//Association des matcher a la ligne de texte recue en parametre
+						
+						matcherC = patternC.matcher(LineOfText);
+						matcherNB = patternNB.matcher(LineOfText);
+						
+						//Boucle permettant de remplir le tableau de char intialise anterieurement						
+						
+						for(int i = 0 ; matcherC.find() ;i++){
+							
+							unsdata[i] = matcherC.group();
+							System.out.println(unsdata[i]);
 						}
-					} else {
+						
+							matcherNB.find();
+							unsdata[3] = matcherNB.group();
+							System.out.println(unsdata[3]);
+							
+						// Placer les infos en ordre
+							sdata[0] = unsdata[2] ;
+							sdata[1] = unsdata[1] ;
+							sdata[2] = unsdata [0] ;
+							sdata [3] = unsdata [3] ;
+							
+							String result = (sdata[0].toString()+sdata[1].toString()+sdata[2].toString()+sdata[3].toString());
+							
+							LineOfText = result ;
 
-						LineOfText += new String(CharacterValue);
+						
 
-					} // if //
+							System.out.println("FormattageFilter:: sending: " + LineOfText) ;						
+							OutputPipe1.write(LineOfText, 0, LineOfText.length());
+							OutputPipe1.flush();
+							
+					}
+				
 
 				} // if
 
