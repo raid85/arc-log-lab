@@ -109,27 +109,24 @@ public class TriFilter extends Thread {
 					if (IntegerCharacter == '\n') { // end of line
 
 						System.out.println("TrieFilter:: received: " + LineOfText + ".");
-
-						if (LineOfText.indexOf(" ASS ") != -1) {
-
+						
+						if (LineOfText.indexOf("ASS") != -1) {
+							LineASS += LineOfText + "\n";
 							System.out.println("TrieFilter:: sending: "
-									+ LineOfText + " to output pipe Trie (ASS).");
-							LineASS += new String(CharacterValue) + "\n";
-						} else if(LineOfText.indexOf(" NOU ") != -1) {
-
+									+ LineASS + " to output pipe Trie (ASS).");
+						} else if(LineOfText.indexOf("NOU") != -1) {
+							LineNOU += LineOfText + "\n";
 							System.out.println("TrieFilter:: sending: "
-									+ LineOfText + " to output Trie (NOU).");
-							LineNOU += new String(CharacterValue) + "\n";
- 						} else if(LineOfText.indexOf(" RES ") != -1) {
-
+									+ LineNOU + " to output Trie (NOU).");
+ 						} else if(LineOfText.indexOf("RES") != -1) {
+							LineRES += LineOfText + "\n";
 							System.out.println("TrieFilter:: sending: "
-									+ LineOfText + " to output Trie (RES).");
-							LineRES += new String(CharacterValue) + "\n";
-						} else if(LineOfText.indexOf(" ROU ") != -1) {
+									+ LineRES + " to output Trie (RES).");
 
+ 						} else if(LineOfText.indexOf("ROU") != -1) {
+							LineROU += LineOfText + "\n";
 							System.out.println("TrieFilter:: sending: "
-									+ LineOfText + " to output Trie (ROU).");
-							LineROU += new String(CharacterValue) + "\n";
+									+ LineROU + " to output Trie (ROU).");
 						}// if
 
 						LineOfText = "";
@@ -139,26 +136,46 @@ public class TriFilter extends Thread {
 						LineOfText += new String(CharacterValue);
 
 					} // if //
+					
 
 				} // if
 
+
+				
 			} // while
 			
 			Done = false;
-
+			
 			LineOfText = LineASS + LineNOU + LineRES + LineROU;
 			
+			System.out.println(LineOfText.substring(0, 17));
+			
+			String test = "";
+			System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+			for(int i = 0; i < LineOfText.length(); i+= (LineOfText.indexOf("\n")+1)){
+				
+				test = LineOfText.substring(i, i+LineOfText.indexOf("\n"));
+				System.out.println(test);
+				System.out.println(LineOfText.indexOf("\n"));
+				//OutputPipe.write(test, 0, test.length());
+				//OutputPipe.flush();
+				
+			}
+			System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+				
 			
 			
 			System.out.println("TrieFilter:: sending: "
 					+ LineOfText + " to output pipe in order.");
-			LineOfText += new String(CharacterValue);
-			OutputPipe
-					.write(LineOfText, 0, LineOfText.length());
+			OutputPipe.write(LineOfText, 0, LineOfText.length());
 			OutputPipe.flush();
 
-		} catch (Exception Error) {
+			
+			
+			
 
+		} catch (Exception Error) {
+			Error.printStackTrace();
 			System.out.println("TrieFilter:: Interrupted.");
 
 		} // try/catch
