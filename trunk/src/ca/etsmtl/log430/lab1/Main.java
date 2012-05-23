@@ -76,13 +76,19 @@ public class Main {
 			PipedWriter pipe05 = new PipedWriter();
 			PipedWriter pipe06 = new PipedWriter();
 			PipedWriter pipe07 = new PipedWriter();
+			PipedWriter pipe08 = new PipedWriter();
+			PipedWriter pipe09 = new PipedWriter();
+			PipedWriter pipe10 = new PipedWriter();
+			PipedWriter pipe11 = new PipedWriter();
+	
+			
 
 
 			// Instantiate the Program Filter Thread
 			Thread FileReaderFilter1 = new FileReaderFilter(argv[0], pipe01);
 
 			// Instantiate the TypeFilter Thread
-			Thread LanguageFilter1 = new TypeFilter(pipe01, pipe02, pipe03);
+			Thread LanguageFilter1 = new TypeFilter(pipe01, pipe02, pipe03,pipe08);
 
 			// Instantiate the Course Filter Threads
 			Thread KeywordFilter1 = new SeverityFilter("CRI", pipe02, pipe04);
@@ -92,13 +98,16 @@ public class Main {
 			Thread MergeFilter1 = new MergeFilter(pipe04, pipe05, pipe06);
 			
 			//FILTRE @ NICO
-			//Thread SeverityLineRemover1 = new SeverityLineRemover(severityLineRemover,pipe06, pipe07);
-			
+			Thread SeverityLineRemover1 = new SeverityLineRemover(severityLineRemover,pipe08, pipe09);
+						
 			Thread FormatFilter = new FormatFilter(pipe06, pipe07);
+			Thread FormatFilter2 = new FormatFilter(pipe09, pipe10);
 			
+			//Thread TriFilter = new TriFilter(pipe10,pipe11) ;
 			
 			// Instantiate the FileWriter Filter Thread
 			Thread FileWriterFilter1 = new FileWriterFilter(argv[1], pipe07);
+			Thread FileWriterFilter2 = new FileWriterFilter("dataout2.txt", pipe10);
 
 			// Start the threads (these are the filters)
 			FileReaderFilter1.start();
@@ -106,9 +115,12 @@ public class Main {
 			KeywordFilter1.start();
 			KeywordFilter2.start();
 			MergeFilter1.start();
-			//SeverityLineRemover1.start();
+			SeverityLineRemover1.start();
+			FormatFilter2.start();
+			//TriFilter.start();
 			FormatFilter.start();
 			FileWriterFilter1.start();
+			FileWriterFilter2.start();
 		}  // if
 		
 	} // main

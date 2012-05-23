@@ -44,7 +44,7 @@ package ca.etsmtl.log430.lab1;
 
 import java.io.*;
 
-public class TrieFilter extends Thread {
+public class TriFilter extends Thread {
 
 	// Declarations
 
@@ -53,7 +53,7 @@ public class TrieFilter extends Thread {
 	PipedReader InputPipe = new PipedReader();
 	PipedWriter OutputPipe = new PipedWriter();
 
-	public TrieFilter(PipedWriter InputPipe, PipedWriter OutputPipe1, PipedWriter OutputPipe2) {
+	public TriFilter(PipedWriter InputPipe, PipedWriter OutputPipe1) {
 
 		try {
 
