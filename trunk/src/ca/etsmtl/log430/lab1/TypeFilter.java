@@ -54,7 +54,10 @@ public class TypeFilter extends Thread {
 	PipedWriter OutputPipe1 = new PipedWriter();
 	PipedWriter OutputPipe2 = new PipedWriter();
 
-	public TypeFilter(PipedWriter InputPipe, PipedWriter OutputPipe1, PipedWriter OutputPipe2) {
+	//New output pipe to meet lab requirement #2
+	PipedWriter OutputPipe3 = new PipedWriter();
+
+	public TypeFilter(PipedWriter InputPipe, PipedWriter OutputPipe1, PipedWriter OutputPipe2, PipedWriter OutputPipe3) {
 
 		try {
 
@@ -67,6 +70,8 @@ public class TypeFilter extends Thread {
 
 			this.OutputPipe1 = OutputPipe1;
 			this.OutputPipe2 = OutputPipe2;
+			//ADD BY RC
+			this.OutputPipe3 = OutputPipe3 ;
 			System.out.println("TypeFilter:: connected to downstream filters.");
 
 		} catch (Exception Error) {
@@ -115,17 +120,28 @@ public class TypeFilter extends Thread {
 									+ LineOfText + " to output pipe 1 (DEF).");
 							LineOfText += new String(CharacterValue);
 							OutputPipe1
-									.write(LineOfText, 0, LineOfText.length());
+							.write(LineOfText, 0, LineOfText.length());
 							OutputPipe1.flush();
+
+							//Writing also to pipe 3
+							System.out.println("TypeFilter:: sending: " + LineOfText + " to output pipe 3 (ALL).");
+							OutputPipe3.write(LineOfText, 0, LineOfText.length());
+							OutputPipe3.flush();
+							
 						} else if(LineOfText.indexOf(" AME ") != -1) {
 
 							System.out.println("TypeFilter:: sending: "
 									+ LineOfText + " to output pipe 2 (AME).");
 							LineOfText += new String(CharacterValue);
 							OutputPipe2
-									.write(LineOfText, 0, LineOfText.length());
+							.write(LineOfText, 0, LineOfText.length());
 							OutputPipe2.flush();
- 						} // if
+							
+							//Writing also to pipe 3
+							System.out.println("TypeFilter:: sending: " + LineOfText + " to output pipe 3 (ALL).");
+							OutputPipe3.write(LineOfText, 0, LineOfText.length());
+							OutputPipe3.flush();
+						} // if
 
 						LineOfText = "";
 
