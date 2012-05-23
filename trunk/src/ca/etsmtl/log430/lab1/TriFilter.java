@@ -53,7 +53,7 @@ public class TriFilter extends Thread {
 	PipedReader InputPipe = new PipedReader();
 	PipedWriter OutputPipe = new PipedWriter();
 
-	public TriFilter(PipedWriter InputPipe, PipedWriter OutputPipe1) {
+	public TriFilter(PipedWriter InputPipe, PipedWriter OutputPipe) {
 
 		try {
 
@@ -146,27 +146,12 @@ public class TriFilter extends Thread {
 			
 			Done = false;
 			
+
 			LineOfText = LineASS + LineNOU + LineRES + LineROU;
-			
-			System.out.println(LineOfText.substring(0, 17));
-			
-			String test = "";
-			System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-			for(int i = 0; i < LineOfText.length(); i+= (LineOfText.indexOf("\n")+1)){
-				
-				test = LineOfText.substring(i, i+LineOfText.indexOf("\n"));
-				System.out.println(test);
-				System.out.println(LineOfText.indexOf("\n"));
-				//OutputPipe.write(test, 0, test.length());
-				//OutputPipe.flush();
-				
-			}
-			System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-				
-			
 			
 			System.out.println("TrieFilter:: sending: "
 					+ LineOfText + " to output pipe in order.");
+			
 			OutputPipe.write(LineOfText, 0, LineOfText.length());
 			OutputPipe.flush();
 
