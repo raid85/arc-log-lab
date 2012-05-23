@@ -80,6 +80,8 @@ public class Main {
                         PipedWriter pipe09 = new PipedWriter();
                         PipedWriter pipe10 = new PipedWriter();
                         PipedWriter pipe11 = new PipedWriter();
+                        PipedWriter pipe12 = new PipedWriter();
+                        
         
                         
 
@@ -104,9 +106,10 @@ public class Main {
                         Thread FormatFilter2 = new FormatFilter(pipe09, pipe10);
                         
                         Thread TriFilter = new TriFilter(pipe10,pipe11) ;
-                        
+                        Thread TriFilter2 = new TriFilter(pipe07,pipe12) ;
+                                             
                         // Instantiate the FileWriter Filter Thread
-                        Thread FileWriterFilter1 = new FileWriterFilter(argv[1], pipe07);
+                        Thread FileWriterFilter1 = new FileWriterFilter(argv[1], pipe12);
                         Thread FileWriterFilter2 = new FileWriterFilter("dataout2.txt", pipe11);
 
                         // Start the threads (these are the filters)
@@ -118,6 +121,7 @@ public class Main {
                         SeverityLineRemover1.start();
                         FormatFilter2.start();
                         TriFilter.start();
+                        TriFilter2.start();
                         FormatFilter.start();
                         FileWriterFilter1.start();
                         FileWriterFilter2.start();
