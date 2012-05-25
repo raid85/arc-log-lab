@@ -1,20 +1,20 @@
 package ca.etsmtl.log430.lab1b;
 
 /**************************************************************************************
- ** Class name: TrieFilter
+ ** Class name: TriFilter
  ** Author: R. Champagne, Ecole de technologie superieure
  ** Date: 2012-May-10
  ** Version 1.0
  ** Last modification: R. Champagne, 2012-May-10
  **
+ ** Créé par: Jean-Paul Do
  ***************************************************************************************
  ** Purpose: Assignment 1 for LOG430, Architecture logicielle. This assignment is 
  ** designed to illustrate a pipe and filter architecture.  For the instructions, refer
  ** to the assignment write-up.
  **
  ** Abstract: This class is intended to be a filter that will send the information on
- **           an output pipe specific to each ticket type. In other terms, this filter splits
- **           the data by language. 
+ **           an output pipe specific in a certain other define in the laboratory 1. 
  ** 
  ** Pseudo Code:
  **
@@ -22,14 +22,20 @@ package ca.etsmtl.log430.lab1b;
  ** 	connect to output pipe
  **
  **	while not end of line
- **    if " DEF " appears on line of text
- **        write line of text to DEF output pipe
- **        flush pipe
- **    else if " AME " appears on line of text
- **        write line of text to AME output pipe
- **        flush pipe
+ **    if " ASS " appears on line of text
+ **        write in LineASS
+ **	   else if " NOU " appears on line of text
+ **        write in LineNOU
+ **    else if " RES " appears on line of text
+ **        write in LineRES
+ **    else if " ROU " appears on line of text
+ **        write in LineRES
  **    end if
  **	end while
+ **
+ **	Mets les données des lignes dans line of text
+ **	write line of text to AME output pipe
+ ** flush pipe
  **
  **	close pipes
  **
@@ -84,10 +90,10 @@ public class TriFilter extends Thread {
 		char[] CharacterValue = new char[1];
 		// char array is required to turn char into a string
 		String LineOfText = "",
-			   LineASS    = "",
-			   LineNOU    = "",
-			   LineRES    = "",
-			   LineROU    = "";
+				LineASS    = "",
+				LineNOU    = "",
+				LineRES    = "",
+				LineROU    = "";
 		// string is required to look for the language code
 		int IntegerCharacter = 0; // the integer value read from the pipe
 
@@ -109,7 +115,7 @@ public class TriFilter extends Thread {
 					if (IntegerCharacter == '\n') { // end of line
 
 						System.out.println("TrieFilter:: received: " + LineOfText + ".");
-						
+
 						if (LineOfText.indexOf("ASS") != -1) {
 							LineASS += LineOfText + "\n";
 							System.out.println("TrieFilter:: sending: "
@@ -118,12 +124,12 @@ public class TriFilter extends Thread {
 							LineNOU += LineOfText + "\n";
 							System.out.println("TrieFilter:: sending: "
 									+ LineNOU + " to output Trie (NOU).");
- 						} else if(LineOfText.indexOf("RES") != -1) {
+						} else if(LineOfText.indexOf("RES") != -1) {
 							LineRES += LineOfText + "\n";
 							System.out.println("TrieFilter:: sending: "
 									+ LineRES + " to output Trie (RES).");
 
- 						} else if(LineOfText.indexOf("ROU") != -1) {
+						} else if(LineOfText.indexOf("ROU") != -1) {
 							LineROU += LineOfText + "\n";
 							System.out.println("TrieFilter:: sending: "
 									+ LineROU + " to output Trie (ROU).");
@@ -136,28 +142,28 @@ public class TriFilter extends Thread {
 						LineOfText += new String(CharacterValue);
 
 					} // if //
-					
+
 
 				} // if
 
 
-				
-			} // while
-			
-			Done = false;
-			
 
+			} // while
+
+			Done = false;
+
+			// remplir LineOfText en ordre demander
 			LineOfText = LineASS + LineNOU + LineRES + LineROU;
-			
+
 			System.out.println("TrieFilter:: sending: "
 					+ LineOfText + " to output pipe in order.");
-			
+			// renvoie l'information du tri dans le pipe out
 			OutputPipe.write(LineOfText, 0, LineOfText.length());
 			OutputPipe.flush();
 
-			
-			
-			
+
+
+
 
 		} catch (Exception Error) {
 			Error.printStackTrace();
