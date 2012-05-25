@@ -9,6 +9,8 @@ import java.io.PipedWriter;
  ** Adapted by R. Champagne, Ecole de technologie superieure 2002-May-08,
  ** 2011-Jan-12, 2012-Jan-11.
  ** 
+ ** Modified by @author ah45290 chebli.r@gmail.com for the purposes of implementing
+ ** assignement 1.
  *************************************************************************************** 
  ** Purpose: Assignment 1 for LOG430, Architecture logicielle. This assignment is
  ** designed to illustrate a pipe and filter architecture. For the instructions,
@@ -25,7 +27,10 @@ import java.io.PipedWriter;
  **    at instantiation. If so, sends the whole line to its output pipe.
  ** 5) MergeFilter: accepts inputs from 2 input pipes and writes them to its output pipe.
  ** 6) FileWriterFilter: sends its input stream to a text file.
- ** 
+ ** 7) FormatFilter : Receives an input stream and retains only the required fields
+ ** 8) SeverityLineRemover : Receives an input and retransmits all the severities except the one received in parameter
+ ** 9) TriFilter : Receives an input and sorts then retransmits
+ **
  ** Pseudo Code:
  ** 
  ** instantiate all filters and pipes
