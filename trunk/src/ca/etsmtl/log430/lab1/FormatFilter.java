@@ -67,12 +67,13 @@ public class FormatFilter extends Thread {
 
 	public void run() {
 
-		// Declarations
-		
-		Pattern patternC   = Pattern.compile("[A-Z]{3}\\s"); // Take the 3rd Match
+		// Déclaration des "patterns" et des " matchers" nécéssaires à la décomposition du string entrant		
+		Pattern patternC   = Pattern.compile("[A-Z]{3}\\s"); 
 		Pattern patternNB = Pattern.compile("[0-9]{4}");
 		Matcher matcherC ;
 		Matcher matcherNB ;
+
+		// Déclaration des deux tableau servant à placer les champs en ordre
 		String unsdata[] = new String [4];
 		String sdata[] = new String [4];
 		boolean isComplete = false ;
@@ -88,7 +89,7 @@ public class FormatFilter extends Thread {
 			Done = false;
 
 			while (!Done) {				
-				
+
 				IntegerCharacter = InputPipe.read();
 				CharacterValue[0] = (char) IntegerCharacter;
 
@@ -101,57 +102,55 @@ public class FormatFilter extends Thread {
 					if (IntegerCharacter == '\n') { // end of line
 
 						System.out.println("FormatFilter received: " + LineOfText);	
-						
+
 						isComplete = true ;
-					
-				} else {
-					LineOfText += new String(CharacterValue);
-				}
+
+					} else {
+						LineOfText += new String(CharacterValue);
+					}
 				} // if
-				
+
 				if (isComplete){
 					isComplete =false ;
 					//--------DEBUT DU TRAITEMENT--------//
-					//Association des matcher a la ligne de texte recue en parametre
-					
+					//Association des "matchers" à la ligne de texte reçue dans le but d'en faire la décomposition
+
 					matcherC = patternC.matcher(LineOfText);
 					matcherNB = patternNB.matcher(LineOfText);
-					
-					//Boucle permettant de remplir le tableau de char intialise anterieurement						
-					
+
+					//Boucle permettant de remplir le tableau de tri intialisé anterieurement						
+
 					for(int i = 0 ; matcherC.find() && i<3 ;i++){						
 						unsdata[i] = matcherC.group();
-						
+
 					}
-					
-						matcherNB.find();
-						unsdata[3] = matcherNB.group();
-						
-						
-					// Placer les infos en ordre
-						sdata[0] = unsdata[2] ;
-						sdata[1] = unsdata[1] ;
-						sdata[2] = unsdata [0] ;
-						sdata [3] = unsdata [3] ;
-						
-						String result = (sdata[0].toString()+sdata[1].toString()+sdata[2].toString()+sdata[3].toString());
-						
-						LineOfText = result+"\n" ;						
-						
-						try {
-							System.out.println("FormatFilter:: sending: " + LineOfText) ;							
-							
-							OutputPipe.write(LineOfText, 0, LineOfText.length());
-							OutputPipe.flush();
-							}
-						 catch (Exception IOError) {
-							
-							System.out.println("FormatFilter : Write Error."+ IOError+LineOfText);
-						} // try/catch
-						 LineOfText = "";						
-						
-						
-					
+
+					matcherNB.find();
+					unsdata[3] = matcherNB.group();
+
+
+					// Placer les champs dans l'ordre demandé
+					sdata[0] = unsdata[2] ;
+					sdata[1] = unsdata[1] ;
+					sdata[2] = unsdata [0] ;
+					sdata [3] = unsdata [3] ;
+
+					//Cocanténation de la ligne finale à envoyer		
+					String result = (sdata[0].toString()+sdata[1].toString()+sdata[2].toString()+sdata[3].toString());
+
+					LineOfText = result+"\n" ;						
+
+					try {
+						System.out.println("FormatFilter:: sending: " + LineOfText) ;							
+
+						OutputPipe.write(LineOfText, 0, LineOfText.length());
+						OutputPipe.flush();
+					}
+					catch (Exception IOError) {
+
+						System.out.println("FormatFilter : Write Error."+ IOError+LineOfText);
+					} // try/catch
+					LineOfText = "";
 				}
 
 			} // while
