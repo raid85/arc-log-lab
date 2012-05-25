@@ -2,6 +2,8 @@ package ca.etsmtl.log430.lab1;
 
 import java.io.PipedWriter;
 
+import ca.etsmtl.log430.lab1b.TriFilter;
+
 /**************************************************************************************
  ** Class name: Main Original author: A.J. Lattanze, CMU Date: 12/3/99
  ** Version 1.2

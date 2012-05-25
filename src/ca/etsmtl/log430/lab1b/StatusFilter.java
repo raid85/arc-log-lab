@@ -4,7 +4,7 @@ import java.io.PipedReader;
 import java.io.PipedWriter;
 
 /**************************************************************************************
- ** Class name: SeverityFilter
+ ** Class name: StatusFilter
  ** Original author: A.J. Lattanze, CMU
  ** Date: 12/3/99
  ** Version 1.0
@@ -31,7 +31,10 @@ import java.io.PipedWriter;
  **
  **		read input pipe
  **
- **		if specified severity1 or severity2 appears on line of text
+ **		if specified status appear on line of text AND include is true
+ **			write line of text to output pipe
+ **			flush pipe
+ **		else if specified status not appear on line of text
  **			write line of text to output pipe
  **			flush pipe
  **		end if
@@ -48,41 +51,41 @@ import java.io.PipedWriter;
  **
  **************************************************************************************/
 
-public class SeverityFilter extends Thread {
+public class StatusFilter extends Thread {
 
 	// Declarations
 
 	boolean Done;
 
-	String severity1,
-		   severity2;
+	String status;
+	Boolean include;
 	PipedReader inputPipe = new PipedReader();
 	PipedWriter outputPipe = new PipedWriter();
 
-	public SeverityFilter(String severity1, String severity2, PipedWriter inputPipe,
+	public StatusFilter(String status, Boolean include, PipedWriter inputPipe,
 			PipedWriter outputPipe) {
 
-		this.severity1 = severity1;
-		this.severity2 = severity2;
+		this.status = status;
+		this.include = include;
 
 		try {
 
 			// Connect inputPipe to Main
 
 			this.inputPipe.connect(inputPipe);
-			System.out.println("SeverityFilters " + severity1 + " and " +
-						severity2 + ":: connected to upstream filter.");
+			System.out.println("StatusFilter " + status
+					+ ":: connected to upstream filter.");
 
 			// Connect outputPipe to Merge
 
 			this.outputPipe = outputPipe;
-			System.out.println("SeverityFilter " + severity1 + " and " +
-					severity2 + ":: connected to downstream filter.");
+			System.out.println("StatusFilter " + status + 
+					":: connected to downstream filter.");
 
 		} catch (Exception Error) {
 
-			System.out.println("SeverityFilter " + severity1 + " and " +
-					severity2 + ":: Error connecting to other filters.");
+			System.out.println("StatusFilter " + status  +
+					":: Error connecting to other filters.");
 
 		} // try/catch
 
@@ -117,21 +120,30 @@ public class SeverityFilter extends Thread {
 
 					if (IntegerCharacter == '\n') { // end of line
 
-						System.out.println("SeverityFilter " + severity1 + " and " +
-								severity2 + ":: received: " + LineOfText + ".");
+						System.out.println("StatusFilter " + status  +
+								":: received: " + LineOfText + ".");
 
-						if (LineOfText.indexOf(severity1) != -1 || LineOfText.indexOf(severity2) != -1) {
+						if (LineOfText.indexOf(status) != -1 && include) {
 
-							System.out.println("SeverityFilter "
-									+ severity1 + " and " +
-									severity2 + ":: sending: "
+							System.out.println("StatusFilter "
+									+ status  + ":: sending: "
 									+ LineOfText + " to output pipe.");
 							LineOfText += new String(CharacterValue);
 							outputPipe
-									.write(LineOfText, 0, LineOfText.length());
+							.write(LineOfText, 0, LineOfText.length());
 							outputPipe.flush();
 
-						} // if
+						} else if(LineOfText.indexOf(status) == -1 && !include){
+
+							System.out.println("StatusFilter is not include "
+									+ status  + ":: sending: "
+									+ LineOfText + " to output pipe.");
+							LineOfText += new String(CharacterValue);
+							outputPipe
+							.write(LineOfText, 0, LineOfText.length());
+							outputPipe.flush();
+
+						} //if
 
 						LineOfText = "";
 
@@ -147,25 +159,25 @@ public class SeverityFilter extends Thread {
 
 		} catch (Exception Error) {
 
-			System.out.println("SeverityFilter::" + severity1 + " and " +
-					severity2 + " Interrupted.");
+			System.out.println("StatusFilter::" + status  +
+					" Interrupted.");
 
 		} // try/catch
 
 		try {
 
 			inputPipe.close();
-			System.out.println("SeverityFilter " + severity1 + " and " +
-					severity2 + ":: input pipe closed.");
+			System.out.println("StatusFilter " + status  +
+					":: input pipe closed.");
 
 			outputPipe.close();
-			System.out.println("SeverityFilter " + severity1 + " and " +
-					severity2 + ":: output pipe closed.");
+			System.out.println("StatusFilter " + status  +
+					":: output pipe closed.");
 
 		} catch (Exception Error) {
 
-			System.out.println("SeverityFilter " + severity1 + " and " +
-					severity2 + ":: Error closing pipes.");
+			System.out.println("StatusFilter " + status  +
+					":: Error closing pipes.");
 
 		} // try/catch
 
