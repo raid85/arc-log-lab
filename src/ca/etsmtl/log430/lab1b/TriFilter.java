@@ -1,7 +1,7 @@
 package ca.etsmtl.log430.lab1b;
 
 /**************************************************************************************
- ** Class name: TypeFilter
+ ** Class name: TrieFilter
  ** Author: R. Champagne, Ecole de technologie superieure
  ** Date: 2012-May-10
  ** Version 1.0
@@ -44,39 +44,32 @@ package ca.etsmtl.log430.lab1b;
 
 import java.io.*;
 
-public class TypeFilter extends Thread {
+public class TriFilter extends Thread {
 
 	// Declarations
 
 	boolean Done;
 
 	PipedReader InputPipe = new PipedReader();
-	PipedWriter OutputPipe1 = new PipedWriter();
-	PipedWriter OutputPipe2 = new PipedWriter();
+	PipedWriter OutputPipe = new PipedWriter();
 
-	//New output pipe to meet lab requirement #2
-	PipedWriter OutputPipe3 = new PipedWriter();
-
-	public TypeFilter(PipedWriter InputPipe, PipedWriter OutputPipe1, PipedWriter OutputPipe2, PipedWriter OutputPipe3) {
+	public TriFilter(PipedWriter InputPipe, PipedWriter OutputPipe) {
 
 		try {
 
 			// Connect inputPipe
 
 			this.InputPipe.connect(InputPipe);
-			System.out.println("TypeFilter:: connected to upstream filter.");
+			System.out.println("TrieFilter:: connected to upstream filter.");
 
 			// Connect OutputPipes
 
-			this.OutputPipe1 = OutputPipe1;
-			this.OutputPipe2 = OutputPipe2;
-			//ADD BY RC
-			this.OutputPipe3 = OutputPipe3 ;
-			System.out.println("TypeFilter:: connected to downstream filters.");
+			this.OutputPipe = OutputPipe;
+			System.out.println("TrieFilter:: connected to downstream filters.");
 
 		} catch (Exception Error) {
 
-			System.out.println("TypeFilter:: Error connecting to other filters.");
+			System.out.println("TrieFilter:: Error connecting to other filters.");
 
 		} // try/catch
 
@@ -88,12 +81,15 @@ public class TypeFilter extends Thread {
 	public void run() {
 
 		// Declarations
-
 		char[] CharacterValue = new char[1];
 		// char array is required to turn char into a string
-		String LineOfText = "";
+		String LineOfText = "",
+			   LineASS    = "",
+			   LineNOU    = "",
+			   LineRES    = "",
+			   LineROU    = "";
 		// string is required to look for the language code
-		int IntegerCharacter; // the integer value read from the pipe
+		int IntegerCharacter = 0; // the integer value read from the pipe
 
 		try {
 
@@ -112,36 +108,26 @@ public class TypeFilter extends Thread {
 
 					if (IntegerCharacter == '\n') { // end of line
 
-						System.out.println("TypeFilter:: received: " + LineOfText + ".");
+						System.out.println("TrieFilter:: received: " + LineOfText + ".");
+						
+						if (LineOfText.indexOf("ASS") != -1) {
+							LineASS += LineOfText + "\n";
+							System.out.println("TrieFilter:: sending: "
+									+ LineASS + " to output pipe Trie (ASS).");
+						} else if(LineOfText.indexOf("NOU") != -1) {
+							LineNOU += LineOfText + "\n";
+							System.out.println("TrieFilter:: sending: "
+									+ LineNOU + " to output Trie (NOU).");
+ 						} else if(LineOfText.indexOf("RES") != -1) {
+							LineRES += LineOfText + "\n";
+							System.out.println("TrieFilter:: sending: "
+									+ LineRES + " to output Trie (RES).");
 
-						if (LineOfText.indexOf(" DEF ") != -1) {
-
-							System.out.println("TypeFilter:: sending: "
-									+ LineOfText + " to output pipe 1 (DEF).");
-							LineOfText += new String(CharacterValue);
-							OutputPipe1
-							.write(LineOfText, 0, LineOfText.length());
-							OutputPipe1.flush();
-
-							//Writing also to pipe 3
-							System.out.println("TypeFilter:: sending: " + LineOfText + " to output pipe 3 (ALL).");
-							OutputPipe3.write(LineOfText, 0, LineOfText.length());
-							OutputPipe3.flush();
-							
-						} else if(LineOfText.indexOf(" AME ") != -1) {
-
-							System.out.println("TypeFilter:: sending: "
-									+ LineOfText + " to output pipe 2 (AME).");
-							LineOfText += new String(CharacterValue);
-							OutputPipe2
-							.write(LineOfText, 0, LineOfText.length());
-							OutputPipe2.flush();
-							
-							//Writing also to pipe 3
-							System.out.println("TypeFilter:: sending: " + LineOfText + " to output pipe 3 (ALL).");
-							OutputPipe3.write(LineOfText, 0, LineOfText.length());
-							OutputPipe3.flush();
-						} // if
+ 						} else if(LineOfText.indexOf("ROU") != -1) {
+							LineROU += LineOfText + "\n";
+							System.out.println("TrieFilter:: sending: "
+									+ LineROU + " to output Trie (ROU).");
+						}// if
 
 						LineOfText = "";
 
@@ -150,29 +136,46 @@ public class TypeFilter extends Thread {
 						LineOfText += new String(CharacterValue);
 
 					} // if //
+					
 
 				} // if
 
+
+				
 			} // while
+			
+			Done = false;
+			
+
+			LineOfText = LineASS + LineNOU + LineRES + LineROU;
+			
+			System.out.println("TrieFilter:: sending: "
+					+ LineOfText + " to output pipe in order.");
+			
+			OutputPipe.write(LineOfText, 0, LineOfText.length());
+			OutputPipe.flush();
+
+			
+			
+			
 
 		} catch (Exception Error) {
-
-			System.out.println("TypeFilter:: Interrupted.");
+			Error.printStackTrace();
+			System.out.println("TrieFilter:: Interrupted.");
 
 		} // try/catch
 
 		try {
 
 			InputPipe.close();
-			System.out.println("TypeFilter:: input pipe closed.");
+			System.out.println("TrieFilter:: input pipe closed.");
 
-			OutputPipe1.close();
-			OutputPipe2.close();
-			System.out.println("TypeFilter:: output pipes closed.");
+			OutputPipe.close();
+			System.out.println("TrieFilter:: output pipes closed.");
 
 		} catch (Exception Error) {
 
-			System.out.println("TypeFilter:: Error closing pipes.");
+			System.out.println("TrieFilter:: Error closing pipes.");
 
 		} // try/catch
 
