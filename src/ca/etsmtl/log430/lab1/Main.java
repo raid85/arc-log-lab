@@ -11,8 +11,6 @@ import ca.etsmtl.log430.lab1b.TriFilter;
  ** Adapted by R. Champagne, Ecole de technologie superieure 2002-May-08,
  ** 2011-Jan-12, 2012-Jan-11.
  ** 
- ** Modified by @author ah45290 chebli.r@gmail.com for the purposes of implementing
- ** assignement 1.
  *************************************************************************************** 
  ** Purpose: Assignment 1 for LOG430, Architecture logicielle. This assignment is
  ** designed to illustrate a pipe and filter architecture. For the instructions,
@@ -33,28 +31,11 @@ import ca.etsmtl.log430.lab1b.TriFilter;
  ** 8) SeverityLineRemover : Receives an input and retransmits all the severities except the one received in parameter
  ** 9) TriFilter : Receives an input and sorts then retransmits
  **
- ** Pseudo Code:
- ** 
- ** instantiate all filters and pipes
- ** start FileReaderFilter
- ** start TypeFilter
- ** start SeverityFilter for CRI
- ** start SeverityFilter for MAJ
- ** start MergeFilter
- ** start FileWriterFilter
- ** 
- ** Running the program
- ** 
- ** java Main IputFile OutputFile > DebugFile
- ** 
- ** Main - Program name
- ** InputFile - Text input file (see comments below)
- ** OutputFile - Text output file with students
- ** DebugFile - Optional file to direct debug statements
  ** 
  ** Modification Log
  ************************************************************************************** 
- ** 
+ ** @author ah45290 chebli.r@gmail.com for the purposes of implementing
+ ** assignement 1.
  **************************************************************************************/
 
 public class Main {
@@ -106,12 +87,14 @@ public class Main {
                         // Instantiate the Merge Filter Thread
                         Thread MergeFilter1 = new MergeFilter(pipe04, pipe05, pipe06);
                         
-                        //FILTRE @ NICO
+                        //Filter to remove selected severity for transmitted result
                         Thread SeverityLineRemover1 = new SeverityLineRemover(severityLineRemover,pipe08, pipe09);
-                                                
+                          
+                        //Format filter to retain only selected fields
                         Thread FormatFilter = new FormatFilter(pipe06, pipe07);
                         Thread FormatFilter2 = new FormatFilter(pipe09, pipe10);
                         
+                        // Instantiate the sorting filters
                         Thread TriFilter = new TriFilter(pipe10,pipe11) ;
                         Thread TriFilter2 = new TriFilter(pipe07,pipe12) ;
                                              
