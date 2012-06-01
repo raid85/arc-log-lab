@@ -2,5 +2,7 @@
 0002 AME INT001 01.01 NOR NOU Ajouter le nouvelle intreface demandee par Jo 
 0003 DEF CMP001 04.18 CRI ASS Le systeme plante quand on tape Z
 0004 DEF DOC001 02.13 MIN ASS Phaute daurtograffe dans le tytre du daucuman
-0005 AME DOC001 02.13 NOR RES Phaute daurtograffe dans le tytre du daucuman
-0006 DEF DOC001 02.13 MIN ROU Phaute daurtograffe dans le tytre du daucuman
+0005 DEF DOC001 02.13 MAJ NOU Phaute daurtograffe dans le tytre du daucuman
+0006 AME DOC001 02.13 MIN RES Phaute daurtograffe dans le tytre du daucuman
+0007 AME DOC001 02.13 CRI RES Phaute daurtograffe dans le tytre du daucuman
+0008 DEF DOC001 02.13 NOR RES Phaute daurtograffe dans le tytre du daucuman
