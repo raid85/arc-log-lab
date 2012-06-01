@@ -104,13 +104,13 @@ public class Main {
 			Thread KeywordFilter4 = new StatusFilter("RES", false,pipe05, pipe14);
 
 			// Instantiate the Merge Filter Thread
-			Thread MergeFilter1 = new MergeFilter(pipe13, pipe14, pipe06);
+			//Thread MergeFilter1 = new MergeFilter(pipe13, null, pipe06);
 
 			//FILTRE @ NICO
 			Thread SeverityLineRemover1 = new SeverityLineRemover(severityLineRemover,pipe08, pipe09);
 
-			Thread FormatFilter = new FormatFilter(pipe06, pipe07);
-			Thread FormatFilter2 = new FormatFilter(pipe09, pipe10);
+			Thread FormatFilter = new FormatFilter(pipe13, pipe07);
+			Thread FormatFilter2 = new FormatFilter(pipe14, pipe10);
 
 			Thread TriFilter = new TriFilter(pipe10,pipe11) ;
 			Thread TriFilter2 = new TriFilter(pipe07,pipe12) ;
@@ -126,7 +126,7 @@ public class Main {
 			KeywordFilter2.start();
 			KeywordFilter3.start();
 			KeywordFilter4.start();
-			MergeFilter1.start();
+			//MergeFilter1.start();
 			SeverityLineRemover1.start();
 			FormatFilter2.start();
 			TriFilter.start();
