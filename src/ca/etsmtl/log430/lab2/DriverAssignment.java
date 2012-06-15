@@ -84,7 +84,7 @@ public class DriverAssignment {
 			 * the second argument (argv[1]). An example teacher file and course
 			 * file is provided as enseignantsLOG.txt and coursLOG.txt
 			 */
-
+			
 			DeliveryReader myCourseList = new DeliveryReader(argv[0]);
 			DriverReader myTeacherList = new DriverReader(argv[1]);
 
