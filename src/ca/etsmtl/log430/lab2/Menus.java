@@ -46,15 +46,18 @@ public class Menus {
 			System.out.println("3) List deliveries currently assigned to a driver today");
 			System.out.println("4) List drivers currently assigned to a delivery today");
 			System.out.println("5) Assign a driver to a delivery");
+			System.out.println("6) Deliveries have done by a driver");
+			System.out.println("7) Deliveries hasn't been assigned");
 			System.out.println("X) Exit");
 			System.out.print("\n\nEnter your choice and press return >> ");
 
 			userChoice = terminal.keyboardReadChar();
 
 			if ((userChoice != 'X') && (userChoice != 'x')
-					&& (userChoice < '1') && (userChoice != '2')
-					&& (userChoice != '3') && (userChoice < '4')
-					&& (userChoice != '5')) {
+					&& (userChoice != '1') && (userChoice != '2')
+					&& (userChoice != '3') && (userChoice != '4')
+					&& (userChoice != '5') && (userChoice != '6')
+					&& (userChoice != '7')) {
 
 				System.out.print("\n\n*** Invalid Choice:: " + userChoice
 						+ " ***");
