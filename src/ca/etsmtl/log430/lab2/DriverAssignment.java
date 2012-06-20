@@ -161,9 +161,8 @@ public class DriverAssignment {
 							.getListOfDrivers());
 					myTeacher = menu.pickDriver(myTeacherList
 							.getListOfDrivers());
-					myCourseDone = menu.pickDelivery(myTeacher.getDeliveriesMadeList());
 					if (myTeacher != null) {
-						display.displayDelivery(myCourseDone);
+						display.displayDeliveryList(myTeacher.getDeliveriesMadeList());
 					}
 					break;
 					

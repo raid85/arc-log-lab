@@ -1,2 +1,5 @@
 D002 1000 0200 1111 Notre-Dame ouest, Montreal H3C 1K3
 D018 1000 0015 1 St-Denis Montreal A1A 1A1
+D001 1000 0200 1100 Notre-Dame ouest, Montreal H3C 1K3
+D023 1000 0015 1012 St-Denis Montreal A1A 1A1
+D067 1000 0200 1199 Notre-Dame ouest, Montreal H3C 1K3
