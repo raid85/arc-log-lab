@@ -67,6 +67,7 @@ public class DriverAssignment {
 			boolean done; // Loop invariant
 			char userChoice; // User's menu choice
 			Delivery myCourse = null; // A course object
+			Delivery myCourseDone = null;
 			Driver myTeacher = null; // A teacher object
 
 			// Instantiates a menu object
@@ -154,8 +155,23 @@ public class DriverAssignment {
 					} // if
 
 					break;
+					
+				case '6':
+					display.displayDriverList(myTeacherList
+							.getListOfDrivers());
+					myTeacher = menu.pickDriver(myTeacherList
+							.getListOfDrivers());
+					myCourseDone = menu.pickDelivery(myTeacher.getDeliveriesMadeList());
+					if (myTeacher != null) {
+						display.displayDelivery(myCourseDone);
+					}
+					break;
+					
+				case '7':
+					break;
 
 				case 'X':
+					done = true;
 
 				case 'x':
 					done = true;
