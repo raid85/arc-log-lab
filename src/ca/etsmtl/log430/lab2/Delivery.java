@@ -52,6 +52,10 @@ public class Delivery {
 	 * List of teachers assigned to the course 
 	 */
 	private DriverList driversAssigned = new DriverList();
+	
+	
+	private boolean assigned;
+
 
 	public Delivery() {
 		this(null);
@@ -62,11 +66,12 @@ public class Delivery {
 	}
 
 	public Delivery(String deliveryID, String estimatedDuration) {
+		assigned = false;
 		this.setDeliveryID(deliveryID);
 		this.setDesiredDeliveryTime(null);
 		this.setEstimatedDeliveryDuration(estimatedDuration);
 	}
-
+	
 	/**
 	 * Assign a teacher to a class.
 	 * 
@@ -74,6 +79,7 @@ public class Delivery {
 	 */
 	public void assignDriver(Driver driver) {
 		driversAssigned.addDriver(driver);
+		assigned = true;
 	}
 
 	public void setDeliveryID(String deliveryID) {
@@ -114,6 +120,10 @@ public class Delivery {
 
 	public void setDriversAssigned(DriverList driversAssigned) {
 		this.driversAssigned = driversAssigned;
+	}
+	
+	public boolean getAssigned(){
+		return assigned;
 	}
 
 } // Delivery class
