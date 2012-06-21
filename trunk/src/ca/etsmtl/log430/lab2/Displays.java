@@ -78,10 +78,15 @@ public class Displays {
 	 * @param delivery
 	 */
 	public void displayDelivery(Delivery delivery) {
-		System.out.print(delivery.getDeliveryID() + " "
-				+ delivery.getDesiredDeliveryTime() + " ");
-		System.out.println(delivery.getEstimatedDeliveryDuration() + " - "
-				+ delivery.getAddress());
+		if (delivery.getDesiredDeliveryTime() != null){
+			System.out.print(delivery.getDeliveryID() + " "
+					+ delivery.getDesiredDeliveryTime() + " ");
+			System.out.println(delivery.getEstimatedDeliveryDuration() + " - "
+					+ delivery.getAddress());	
+		}
+		else{
+			System.out.print(delivery.getDeliveryID() + ":" + delivery.getEstimatedDeliveryDuration() + "\n");
+		}
 	}
 
 	/**
