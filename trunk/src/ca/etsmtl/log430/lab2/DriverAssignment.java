@@ -67,7 +67,6 @@ public class DriverAssignment {
 			boolean done; // Loop invariant
 			char userChoice; // User's menu choice
 			Delivery myCourse = null; // A course object
-			Delivery myCourseDone = null;
 			Driver myTeacher = null; // A teacher object
 
 			// Instantiates a menu object
