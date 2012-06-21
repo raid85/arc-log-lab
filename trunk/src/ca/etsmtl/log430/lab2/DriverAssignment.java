@@ -166,6 +166,7 @@ public class DriverAssignment {
 					break;
 					
 				case '7':
+					display.displayNotAssignedDeliveryList(myCourseList.getListOfDeliveries());
 					break;
 
 				case 'X':
