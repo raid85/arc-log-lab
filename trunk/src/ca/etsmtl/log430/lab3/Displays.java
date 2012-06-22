@@ -1,17 +1,17 @@
-package ca.etsmtl.log430.lab2;
+package ca.etsmtl.log430.lab3;
 
 /**
- * This class displays various types of information on courses and teachers
+ * This class displays various types of information on deliveries and drivers
  * (individually and as lists) to the screen.
  * 
  * @author A.J. Lattanze, CMU
- * @version 1.4, 2012-May-31
+ * @version 1.5, 2012-Jun-19
  */
 
 /*
  * Modification Log
  * ************************************************************************
- * v1.4, R. Champagne, 2012-May-31 - Various refactorings for new lab.
+ * v1.5, R. Champagne, 2012-Jun-19 - Various refactorings for new lab.
  * 
  * v1.3, R. Champagne, 2012-Feb-02 - Various refactorings for new lab.
  * 
@@ -78,15 +78,10 @@ public class Displays {
 	 * @param delivery
 	 */
 	public void displayDelivery(Delivery delivery) {
-		if (delivery.getDesiredDeliveryTime() != null){
-			System.out.print(delivery.getDeliveryID() + " "
-					+ delivery.getDesiredDeliveryTime() + " ");
-			System.out.println(delivery.getEstimatedDeliveryDuration() + " - "
-					+ delivery.getAddress());	
-		}
-		else{
-			System.out.print(delivery.getDeliveryID() + ":" + delivery.getEstimatedDeliveryDuration() + "\n");
-		}
+		System.out.print(delivery.getDeliveryID() + " "
+				+ delivery.getDesiredDeliveryTime() + " ");
+		System.out.println(delivery.getEstimatedDeliveryDuration() + " - "
+				+ delivery.getAddress());
 	}
 
 	/**
@@ -104,8 +99,9 @@ public class Displays {
 		lineCheck(1);
 
 		System.out
-		.println("===========================================================");
+				.println("===========================================================");
 		lineCheck(1);
+
 		delivery.getDriversAssigned().goToFrontOfList();
 		done = false;
 
@@ -128,7 +124,7 @@ public class Displays {
 	}
 
 	/**
-	 * Lists the courses currently assigned to a teacher this term.
+	 * Lists the deliveries currently assigned to a driver today.
 	 * 
 	 * @param driver
 	 */
@@ -142,7 +138,7 @@ public class Displays {
 				+ driver.getDriverID());
 		lineCheck(2);
 		System.out
-		.println("========================================================= ");
+				.println("========================================================= ");
 		lineCheck(1);
 
 		driver.getDeliveriesAssigned().goToFrontOfList();
@@ -168,8 +164,8 @@ public class Displays {
 	}
 
 	/**
-	 * Displays the students in the student list. Displays the same information
-	 * that is listed in the displayStudent() method listed above.
+	 * Displays the drivers in the drivers list. Displays the same information
+	 * that is listed in the displayDriver() method listed above.
 	 * 
 	 * @param list
 	 */
@@ -205,7 +201,7 @@ public class Displays {
 	}
 
 	/**
-	 * Displays the deliveries in the deliverieslist. Displays the same
+	 * Displays the deliveries in the deliveries list. Displays the same
 	 * information that is listed in the displayDelivery() method listed above.
 	 * 
 	 * @param list
@@ -234,36 +230,6 @@ public class Displays {
 				displayDelivery(delivery);
 				lineCheck(1);
 
-			} // if
-
-		} // while
-
-	}
-
-	public void displayNotAssignedDeliveryList(DeliveryList list){
-		boolean done;
-		Delivery delivery;
-
-		System.out.print("\n");
-		lineCheck(1);
-
-		list.goToFrontOfList();
-		done = false;
-
-		while (!done) {
-
-			delivery = list.getNextDelivery();
-
-			if (delivery == null) {
-
-				done = true;
-
-			} else {
-				if(!delivery.getAssigned()){
-					displayDelivery(delivery);
-					lineCheck(1);
-
-				}
 			} // if
 
 		} // while

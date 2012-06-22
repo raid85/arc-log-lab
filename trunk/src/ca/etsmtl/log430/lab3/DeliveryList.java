@@ -1,17 +1,19 @@
-package ca.etsmtl.log430.lab2;
+package ca.etsmtl.log430.lab3;
 
 /**
  * This class is used by various other classes that need to keep a list of
- * courses. It extends the List class which provides the basic functionality for
- * storage and retrieval of the Delivery Object from the list.
+ * deliveries. It extends the List class which provides the basic functionality for
+ * storage and retrieval of the Delivery object from the list.
  * 
  * @author A.J. Lattanze, CMU
- * @version 1.4, 2012-May-31
+ * @version 1.5, 2012-Jun-19
  */
 
 /*
  * Modification Log
  * ****************************************************************************
+ * v1.5, R. Champagne, 2012-Jun-19 - Various refactorings for new lab.
+ * 
  * v1.4, R. Champagne, 2012-May-31 - Various refactorings for new lab.
  * 
  * v1.3, R. Champagne, 2012-Feb-02 - Various refactorings for new lab.

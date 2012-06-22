@@ -1,4 +1,5 @@
-package ca.etsmtl.log430.lab2;
+package ca.etsmtl.log430.lab3;
+
 /**
  * This class will read from the InputFile and instantiate the Delivery objects
  * in the system. It is assumed that the InputFile is in the local directory,
@@ -12,14 +13,16 @@ package ca.etsmtl.log430.lab2;
  *		|    Desired delivery time (HHMM)
  *		Delivery ID </pre>
  *
- * The DELIVERIS.txt file has been provided as an example file.
+ * The deliveries.txt file has been provided as an example file.
  *
  * @author A.J. Lattanze, CMU
- * @version 1.4, 2012-May-31
+ * @version 1.5, 2012-Jun-19
  */
 
 /* Modification Log
  *****************************************************************************
+ * v1.5, R. Champagne, 2012-Jun-19 - Various refactorings for new lab.
+ * 
  * v1.4, R. Champagne, 2012-May-31 - Various refactorings for new lab.
  * 
  * v1.3, R. Champagne, 2012-Feb-02 - Various refactorings for new lab.
@@ -118,8 +121,6 @@ public class DeliveryReader extends LineOfTextFileReader {
         int tokenCount; // Number of tokens parsed
         int frontIndex; // Front index of token to parse
         int backIndex; // Back index of token to parse
-
-        // Instantiate a course object
 
         Delivery newDelivery = new Delivery();
 
