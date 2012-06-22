@@ -75,9 +75,7 @@ public class Delivery {
 	 * @param driver
 	 */
 	public void assignDriver(Driver driver) {
-		System.out.println(driver.getTotalDeliveryTime());
 		if (!this.assigned) {
-			System.out.println("Not Assigned");
 
 			driver.getDeliveriesAssigned().goToFrontOfList();
 			Delivery driverDelivery;
@@ -90,8 +88,9 @@ public class Delivery {
 				if (driverDelivery == null) {
 					if (!conflict) {
 						if ((driver.getTotalDeliveryTime()+this.getEstimatedDeliveryDuration("minute")<=720 && driver.getType().equals("SNR")) ||  ((driver.getTotalDeliveryTime()+this.getEstimatedDeliveryDuration("minute")<=480 && driver.getType().equals("JNR")))) {
-							System.out.println("append Driver");
+							
 							driversAssigned.addDriver(driver);
+							
 						}
 						else{
 							System.out.println("\n\n *** Maximum DeliveryTime has been reached ***");
@@ -111,10 +110,7 @@ public class Delivery {
 							|| driverDelivery.getDesiredDeliveryTime("minute") >= this
 									.getDesiredDeliveryTime("minute")
 									+ this.getEstimatedDeliveryDuration("minute")) {
-						System.out.println(driverDelivery
-								.getDesiredDeliveryTime("minute"));
-						System.out.println(this
-								.getDesiredDeliveryTime("minute"));
+
 					} else {
 						conflict = true;
 					}

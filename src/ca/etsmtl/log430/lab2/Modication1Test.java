@@ -9,7 +9,7 @@ public class Modication1Test {
 	private Driver driver = myTeacherList.getListOfDrivers().findTeacherByID("DRV001");
 	private Delivery delivery;
 	
-	
+	//Verification des donnnees dans la liste des livraisons faits
 	@Test
 	public void valide() {
 		delivery = driver.getDeliveriesMadeList().getNextDelivery();
@@ -20,6 +20,8 @@ public class Modication1Test {
 		assertTrue(delivery.getDeliveryID().equalsIgnoreCase("D067"));		
 	}
 	
+	
+	//verifie quand il est null
 	@Test
 	public void nullTest() {
 		for(int i = 0; i < 4; i++)	
