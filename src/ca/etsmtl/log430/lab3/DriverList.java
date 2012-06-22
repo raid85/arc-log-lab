@@ -1,4 +1,4 @@
-package ca.etsmtl.log430.lab2;
+package ca.etsmtl.log430.lab3;
 
 /**
  * This class is used by various other classes that need to keep a list of
@@ -6,12 +6,14 @@ package ca.etsmtl.log430.lab2;
  * functionality for storage and retrieval of the Driver Object from the list.
  * 
  * @author A.J. Lattanze, CMU
- * @version 1.4, 2012-May-31
+ * @version 1.5, 2012-Jun-19
  */
 
 /*
  * Modification Log
  * ***************************************************************************
+ * v1.5, R. Champagne, 2012-Jun-19 - Various refactorings for new lab.
+ * 
  * v1.4, R. Champagne, 2012-May-31 - Various refactorings for new lab.
  * 
  * v1.3, R. Champagne, 2012-Feb-02 - Various refactorings for new lab.
@@ -27,7 +29,7 @@ package ca.etsmtl.log430.lab2;
 public class DriverList extends List {
 
 	/**
-	 * Adds a new teacher to the list. All the issues of casting are taken care
+	 * Adds a new driver to the list. All the issues of casting are taken care
 	 * of within this class.
 	 * 
 	 * @param driver
@@ -39,7 +41,7 @@ public class DriverList extends List {
 	/**
 	 * @return The driver at the current position pointed to by the
 	 *         internal list pointer. Subsequent calls will return the next
-	 *         teacher object in the list. A null object is returned if list is
+	 *         driver object in the list. A null object is returned if list is
 	 *         empty or the end of list has been reached.
 	 */
 	public Driver getNextDriver() {
@@ -47,7 +49,7 @@ public class DriverList extends List {
 	}
 
 	/**
-	 * Determines whether the Driver OBJ is currently in the student list.
+	 * Determines whether the Driver OBJ is currently in the list.
 	 * 
 	 * @param driver
 	 * @return true if the driver is in the list, false otherwise.
@@ -86,23 +88,23 @@ public class DriverList extends List {
 
 		return (result);
 
-	} // findTeacher
+	} // findDriver
 
 	/**
-	 * Finds a teacher in a list using the teacherID as the search key.
+	 * Finds a driver in a list using the driverID as the search key.
 	 * 
-	 * @param teacherID
-	 * @return if the current list object's teacherID matches the teacherID
+	 * @param driverID
+	 * @return if the current list object's driverID matches the driverID
 	 *         passed to the method, the Driver object is returned to the
 	 *         caller. Otherwise, returns null.
 	 */
-	public Driver findTeacherByID(String teacherID) {
+	public Driver findDriverByID(String driverID) {
 
 		Driver currentObject = null;
 		boolean done = false;
 		boolean found = false;
 
-		// Note that this method assumes that all courses have different
+		// Note that this method assumes that all drivers have different
 		// identification numbers.
 
 		goToFrontOfList();
@@ -117,7 +119,7 @@ public class DriverList extends List {
 
 			} else {
 
-				if (currentObject.getDriverID().compareTo(teacherID) == 0) {
+				if (currentObject.getDriverID().compareTo(driverID) == 0) {
 
 					found = true;
 					done = true;
@@ -138,6 +140,6 @@ public class DriverList extends List {
 
 		} // if
 
-	} // findTeacherByID
+	} // findDriverByID
 
 } // DriverList

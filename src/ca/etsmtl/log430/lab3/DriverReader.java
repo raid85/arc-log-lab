@@ -1,32 +1,36 @@
-package ca.etsmtl.log430.lab2;
+package ca.etsmtl.log430.lab3;
 
 /**
- * This class reads from the InputFile and instantiates the Driver objects in
- * the system. It is assumed that the InputFile is in the local directory,
- * contains the active drivers, and each line of input is read and expected in
- * the following format: a field oriented and space-separated text file that
- * lists all the drivers. The fields are as follows:
- * <pre>
- *     DRV001 Bleau Joseph PRF D001:0200 D023:0130 D067:0030
- *     |      |     |      |   |
- *     |      |     |      |   Previous deliveries this week (ID-duration pairs)
- *     |      |     |      Type of driver(JNR=junior, SNR=senior)
- *     |      |     Driver's First Name
- *     |      Driver's Last Name 
- *     Driver ID</pre>
+ * Reads from the InputFile and instantiates the Driver objects in the system.
+ * It is assumed that the InputFile is in the local directory, contains the
+ * active drivers, and each line of input is read and expected in the following
+ * format: a field oriented and space-separated text file that lists all the
+ * drivers. The fields are as follows:
  * 
- * The deliveries.txt file has been provided as an example.
- *
- * @author A.J. Lattanze, CMU 
- * @version 1.5, 2012-May-31
+ * <pre>
+ *     DRV001 Bleau  Joseph  JNR  D001:0200 D023:0130 D067:0030
+ *     |      |      |       |    |
+ *     |      |      |       |    Previous deliveries made (id:duration - HHMM)
+ *     |      |      |       Type of driver (SNR=senior, JNR=junior)
+ *     |      |      Driver's First Name
+ *     |      Driver's Last Name 
+ *     Driver ID
+ * </pre>
+ * 
+ * The drivers.txt file has been provided as an example.
+ * 
+ * @author A.J. Lattanze, CMU
+ * @version 1.6, 2012-Jun-19
  */
 
 /*
  * Modification Log
- * ***********************************************************************
- * v1.5, R. Champagne, 2012-May-31 - Various refactorings for new lab.
+ ************************************************************************
+ * v1.6, 2012-Jun-19, R. Champagne, Various refactorings for new lab.
  * 
- * v1.4, R. Champagne, 2012-Feb-02 - Various refactorings for new lab.
+ * v1.5, 2012-May-31, R. Champagne, Various refactorings for new lab.
+ * 
+ * v1.4, 2012-Feb-14, R. Champagne, Various refactorings for new lab.
  * 
  * v1.3, 2011-Feb-02, R. Champagne - Various refactorings, javadoc comments.
  * 
@@ -48,22 +52,26 @@ public class DriverReader extends LineOfTextFileReader {
 	private DriverList listOfDrivers = new DriverList();
 
 	public DriverReader() {
+
 		listOfDrivers = null;
-	}
+
+	} // Constructor #1
 
 	public DriverReader(String InputFile) {
+
 		listOfDrivers = readDriverListFromFile(InputFile);
-	}
+
+	} // Constructor #2
 
 	/**
-	 * Reads a line of text. The line of text is passed to the parseTeacherText
+	 * Reads a line of text. The line of text is passed to the parseText
 	 * method where it is parsed and a Driver object is returned. The Driver
 	 * object is then added to the list. When a null is read from the Driver
 	 * file the method terminates and returns the list to the caller. A list
 	 * that points to null is an empty list.
 	 * 
 	 * @param inputFile
-	 * @return The list of teachers
+	 * @return The list of drivers
 	 */
 	public DriverList readDriverListFromFile(String inputFile) {
 
@@ -137,9 +145,8 @@ public class DriverReader extends LineOfTextFileReader {
 		int tokenCount = 0; // Number of tokens parsed
 		int frontIndex = 0; // Front index or character position
 		int backIndex = 0; // Rear index or character position
-		int colonIndex = 0; // index of colon in delevery:duration substring
 
-		// Create a teacher object to record all of the info parsed from
+		// Create a Driver object to record all of the info parsed from
 		// the line of text
 
 		Driver driver = new Driver();
@@ -178,27 +185,21 @@ public class DriverReader extends LineOfTextFileReader {
 				tokenCount++;
 				break;
 
-			case 3: // Driver type (e.g. SNR, JNR)
+			case 3: // Driver type (e.g. PRF, CHR)
 				driver.setType(token);
 				frontIndex = backIndex + 1;
 				tokenCount++;
 				break;
 
 			default:
-				/* This is where the previous deliveries are added to the driver's
-				 * previous deliveries made list within the driver object.
-				 * This needs to be parsed at ":" to separate ID and estimated duration.
-				 */
-				colonIndex = token.indexOf(':');
-				if (colonIndex != -1) {
-					String deliveryID = token.substring(0, colonIndex);
-					String estimatedDuration = token.substring(colonIndex+1);
-					driver.getDeliveriesMadeList().addDelivery(new Delivery(deliveryID, estimatedDuration));
-					frontIndex = backIndex + 1;
-					break;
-				} else {
-					// Error!
-				}
+				// This is where the deliveries are added to the drivers'
+				// deliveries made list within the driver object
+				// Note that there are no details other than the delivery
+				// ID and duration that is recorded in the driver's previous
+				// deliveries list.
+				driver.getDeliveriesMadeList().addDelivery(new Delivery(token));
+				frontIndex = backIndex + 1;
+				break;
 
 			} // end switch
 
@@ -206,6 +207,6 @@ public class DriverReader extends LineOfTextFileReader {
 
 		return (driver);
 
-	} // parseTeacherText
+	} // parseText
 
 } // DriverReader
