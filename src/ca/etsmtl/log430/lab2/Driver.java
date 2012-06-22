@@ -2,28 +2,32 @@ package ca.etsmtl.log430.lab2;
 
 /**
  * This class defines the Driver object for the system. Besides the static
- * attributes, there are two lists maintained. deliveriesMadeList is a DeliveryList
- * object that maintains a list of courses that the student has taken.
- * deliveriesAssignedList is also a DeliveryList object that maintains a list of
- * deliveries assigned to the driver for the current day.
+ * attributes, there are two lists maintained. deliveriesMadeList is a
+ * DeliveryList object that maintains a list of courses that the student has
+ * taken. deliveriesAssignedList is also a DeliveryList object that maintains a
+ * list of deliveries assigned to the driver for the current day.
  * 
  * @author A.J. Lattanze, CMU
  * @version 1.4, 2012-May-31
  */
 
-/* Modification Log
- ****************************************************************************
+/*
+ * Modification Log
+ * ***************************************************************************
+ * v1.5	 N.	 Noel	2012-Jun-12 Rajout d'une methode pour calculer le temps total par chauffeur
+ * 
  * v1.4, R. Champagne, 2012-May-31 - Various refactorings for new lab.
  * 
  * v1.3, R. Champagne, 2012-Feb-02 - Various refactorings for new lab.
  * 
  * v1.2, 2011-Feb-02, R. Champagne - Various refactorings, javadoc comments.
- *  
- * v1.1, 2002-May-21, R. Champagne - Adapted for use at ETS. 
+ * 
+ * v1.1, 2002-May-21, R. Champagne - Adapted for use at ETS.
  * 
  * v1.0, 12/29/99, A.J. Lattanze - Original version.
-
- ****************************************************************************/
+ * 
+ * **************************************************************************
+ */
 
 public class Driver {
 
@@ -31,41 +35,48 @@ public class Driver {
 	 * Driver's Last Name
 	 */
 	private String lastName;
-	
+
 	/**
 	 * Driver's First Name
 	 */
 	private String firstName;
-	
+
 	/**
 	 * Driver's identification number
 	 */
 	private String driverID;
-	
+
 	/**
 	 * Driver type (JNR = junior, SNR = senior)
 	 */
 	private String driverType;
 
 	/**
-	 *  List of deliveries previously made (before today) by the driver
+	 * List of deliveries previously made (before today) by the driver
 	 */
 	private DeliveryList deliveriesMadeList = new DeliveryList();
 
 	/**
-	 *  List of deliveries assigned to the driver for the current day
+	 * List of deliveries assigned to the driver for the current day
 	 */
 	private DeliveryList deliveriesAssignedList = new DeliveryList();
 
+	// private static boolean assigned = false;
 	/**
 	 * Registers a student for a course by adding a student for a course.
 	 * 
 	 * @param delivery
 	 */
 	public void assignDelivery(Delivery delivery) {
-
-		getDeliveriesAssigned().addDelivery(delivery);
-
+		System.out.println(delivery.getAssigned());
+		//verify if the delivery already got assigned to someone
+		if (!delivery.getAssigned()) {
+			//Verify if the driver really did get assigned because there could of been a schedule conflict
+			if (delivery.getDriversAssigned().findDriver(this)) {
+				getDeliveriesAssigned().addDelivery(delivery);
+			}
+			delivery.setAssigned(true);
+		}
 	} // Register
 
 	public void setLastName(String lastName) {
@@ -115,5 +126,30 @@ public class Driver {
 	public DeliveryList getDeliveriesAssigned() {
 		return deliveriesAssignedList;
 	}
+	//Added the Total DeliverTime per Driver
+	public int getTotalDeliveryTime() {
+		boolean done;
+		 int totalDeliveryTime =0;
+		 Delivery deliveryItem;
+		//boolean conflict = false;
+		done = false;
+		this.deliveriesAssignedList.goToFrontOfList();
+		while (!done) {
+			
+			deliveryItem = this.deliveriesAssignedList.getNextDelivery();
+			
+			if (deliveryItem == null) {
+				done = true;
+				return totalDeliveryTime;
+			} 
+			else {
+				totalDeliveryTime+= deliveryItem.getEstimatedDeliveryDuration("minute");
+			}
+		}
+		//deliveriesAssignedList.getNextDelivery();
+		return totalDeliveryTime;
+	}
+	
+	
 
 } // Driver class

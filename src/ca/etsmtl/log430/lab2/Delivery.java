@@ -49,13 +49,10 @@ public class Delivery {
 	private String estimatedDeliveryDuration;
 
 	/**
-	 * List of teachers assigned to the course 
+	 * List of teachers assigned to the course
 	 */
 	private DriverList driversAssigned = new DriverList();
-	
-	
 	private boolean assigned;
-
 
 	public Delivery() {
 		this(null);
@@ -66,20 +63,72 @@ public class Delivery {
 	}
 
 	public Delivery(String deliveryID, String estimatedDuration) {
-		assigned = false;
+		this.setAssigned(false);
 		this.setDeliveryID(deliveryID);
 		this.setDesiredDeliveryTime(null);
 		this.setEstimatedDeliveryDuration(estimatedDuration);
 	}
-	
+
 	/**
 	 * Assign a teacher to a class.
 	 * 
 	 * @param driver
 	 */
 	public void assignDriver(Driver driver) {
-		driversAssigned.addDriver(driver);
-		assigned = true;
+		System.out.println(driver.getTotalDeliveryTime());
+		if (!this.assigned) {
+			System.out.println("Not Assigned");
+
+			driver.getDeliveriesAssigned().goToFrontOfList();
+			Delivery driverDelivery;
+			boolean done;
+			boolean conflict = false;
+			done = false;
+			while (!done) {
+				driverDelivery = driver.getDeliveriesAssigned()
+						.getNextDelivery();
+				if (driverDelivery == null) {
+					if (!conflict) {
+						if ((driver.getTotalDeliveryTime()+this.getEstimatedDeliveryDuration("minute")<=720 && driver.getType().equals("SNR")) ||  ((driver.getTotalDeliveryTime()+this.getEstimatedDeliveryDuration("minute")<=480 && driver.getType().equals("JNR")))) {
+							System.out.println("append Driver");
+							driversAssigned.addDriver(driver);
+						}
+						else{
+							System.out.println("\n\n *** Maximum DeliveryTime has been reached ***");
+						}
+						
+					}
+					else{
+						System.out.println("\n\n *** Schedule Conflict ***");
+					}
+					done = true;
+				} else {
+					// if to validate the schedule conflict
+					if (driverDelivery.getDesiredDeliveryTime("minute")
+							+ driverDelivery
+									.getEstimatedDeliveryDuration("minute") <= this
+							.getDesiredDeliveryTime("minute")
+							|| driverDelivery.getDesiredDeliveryTime("minute") >= this
+									.getDesiredDeliveryTime("minute")
+									+ this.getEstimatedDeliveryDuration("minute")) {
+						System.out.println(driverDelivery
+								.getDesiredDeliveryTime("minute"));
+						System.out.println(this
+								.getDesiredDeliveryTime("minute"));
+					} else {
+						conflict = true;
+					}
+				}
+			} // if
+
+		} else {
+			System.out
+					.println("\n\n *** There is already a driver assigned to this delivery ***");
+		}
+	}
+
+	public void setAssigned(boolean assigned) {
+		this.assigned = assigned;
 	}
 
 	public void setDeliveryID(String deliveryID) {
@@ -98,12 +147,31 @@ public class Delivery {
 		return desiredDeliveryTime;
 	}
 
+	// Override getDesiredDeliveryTime to get the time in minutes
+	public int getDesiredDeliveryTime(String minute) {
+		// System.out.println(desiredDeliveryTime.substring(2));
+		int desiredDeliveryTimeInMinutes = Integer.parseInt(desiredDeliveryTime
+				.substring(0, 2))
+				* 60
+				+ Integer.parseInt(desiredDeliveryTime.substring(2));
+		return desiredDeliveryTimeInMinutes;
+	}
+
 	public void setEstimatedDeliveryDuration(String duration) {
 		this.estimatedDeliveryDuration = duration;
 	}
 
 	public String getEstimatedDeliveryDuration() {
 		return estimatedDeliveryDuration;
+	}
+
+	// Override getEstimatedDeliveryDuration to get the time in minutes
+	public int getEstimatedDeliveryDuration(String minute) {
+		int estimatedDeliveryDurationInMinutes = Integer
+				.parseInt(estimatedDeliveryDuration.substring(0, 2))
+				* 60
+				+ Integer.parseInt(estimatedDeliveryDuration.substring(2));
+		return estimatedDeliveryDurationInMinutes;
 	}
 
 	public String getAddress() {
@@ -121,8 +189,8 @@ public class Delivery {
 	public void setDriversAssigned(DriverList driversAssigned) {
 		this.driversAssigned = driversAssigned;
 	}
-	
-	public boolean getAssigned(){
+
+	public boolean getAssigned() {
 		return assigned;
 	}
 
