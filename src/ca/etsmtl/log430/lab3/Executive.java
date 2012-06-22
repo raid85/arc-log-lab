@@ -55,6 +55,7 @@ public class Executive extends Communication {
 		addToReceiverList("ListDeliveriesAssignedToDriverComponent");
 		addToReceiverList("ListDriversAssignedToDeliveryComponent");
 		addToReceiverList("AssignDriverToDelivery");
+		addToReceiverList("ListDeliveriesDoneByDriver");
 
 		while (!done) {
 			userChoice = menu.mainMenu();
@@ -78,6 +79,10 @@ public class Executive extends Communication {
 
 			case '5':
 				signalReceivers("AssignDriverToDelivery");
+				break;
+			
+			case '6':				
+				signalReceivers("ListDeliveriesDoneByDriver");
 				break;
 
 			case 'X':
