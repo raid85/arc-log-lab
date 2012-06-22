@@ -47,6 +47,7 @@ public class Menus {
 			System.out.println("4) List drivers currently assigned to a delivery today");
 			System.out.println("5) Assign a driver to a delivery");
 			System.out.println("6) Deliveries for a driver this week (Excluding today)");
+			System.out.println("7) Deliveries have not been assigned yet");
 			System.out.println("X) Exit");
 			System.out.print("\n\nEnter your choice and press return >> ");
 

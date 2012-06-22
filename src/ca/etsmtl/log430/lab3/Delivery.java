@@ -53,6 +53,8 @@ public class Delivery {
 	 * List of drivers assigned to the delivery
 	 */
 	private DriverList driversAssigned = new DriverList();
+	
+	private boolean notAssigned;
 
 	public Delivery() {
 		this(null);
@@ -63,6 +65,7 @@ public class Delivery {
 	}
 
 	public Delivery(String deliveryID, String estimatedDuration) {
+		notAssigned = true;
 		this.setDeliveryID(deliveryID);
 		this.setDesiredDeliveryTime(null);
 		this.setEstimatedDeliveryDuration(estimatedDuration);
@@ -75,6 +78,7 @@ public class Delivery {
 	 */
 	public void assignDriver(Driver driver) {
 		driversAssigned.addDriver(driver);
+		notAssigned = false;
 	}
 
 	public void setDeliveryID(String deliveryID) {
@@ -115,6 +119,10 @@ public class Delivery {
 
 	public void setDriversAssigned(DriverList driversAssigned) {
 		this.driversAssigned = driversAssigned;
+	}
+	
+	public boolean getNotAssigned(){
+		return notAssigned;
 	}
 
 } // Delivery class

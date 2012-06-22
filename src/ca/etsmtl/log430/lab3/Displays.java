@@ -104,7 +104,7 @@ public class Displays {
 		lineCheck(1);
 
 		System.out
-				.println("===========================================================");
+		.println("===========================================================");
 		lineCheck(1);
 
 		delivery.getDriversAssigned().goToFrontOfList();
@@ -143,7 +143,7 @@ public class Displays {
 				+ driver.getDriverID());
 		lineCheck(2);
 		System.out
-				.println("========================================================= ");
+		.println("========================================================= ");
 		lineCheck(1);
 
 		driver.getDeliveriesAssigned().goToFrontOfList();
@@ -233,6 +233,36 @@ public class Displays {
 			} else {
 
 				displayDelivery(delivery);
+				lineCheck(1);
+
+			} // if
+
+		} // while
+
+	}
+
+	public void displayDeliveryNotAssignedList(DeliveryList list) {
+
+		boolean done;
+		Delivery delivery;
+
+		System.out.print("\n");
+		lineCheck(1);
+
+		list.goToFrontOfList();
+		done = false;
+
+		while (!done) {
+
+			delivery = list.getNextDelivery();
+
+			if (delivery == null) {
+
+				done = true;
+
+			} else {
+				if (delivery.getNotAssigned())
+					displayDelivery(delivery);
 				lineCheck(1);
 
 			} // if
