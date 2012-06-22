@@ -68,14 +68,13 @@ public class Driver {
 	 * @param delivery
 	 */
 	public void assignDelivery(Delivery delivery) {
-		System.out.println(delivery.getAssigned());
 		//verify if the delivery already got assigned to someone
 		if (!delivery.getAssigned()) {
 			//Verify if the driver really did get assigned because there could of been a schedule conflict
 			if (delivery.getDriversAssigned().findDriver(this)) {
 				getDeliveriesAssigned().addDelivery(delivery);
+				delivery.setAssigned(true);
 			}
-			delivery.setAssigned(true);
 		}
 	} // Register
 
