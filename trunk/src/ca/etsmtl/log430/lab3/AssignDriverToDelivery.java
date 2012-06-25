@@ -67,8 +67,15 @@ public class AssignDriverToDelivery extends Communication
 					 * If the selected delivery and driver exist, then complete
 					 * the assignment process.
 					 */
-					myDelivery.assignDriver(myDriver);
-					myDriver.assignDelivery(myDelivery);
+					if(myDelivery.getNotAssigned()==true){
+						
+						myDelivery.assignDriver(myDriver);
+						myDriver.assignDelivery(myDelivery);
+					}else{
+						
+						System.out.println("-----------------------------------------------------------------" +
+								"\n"+"******** Erreur : Cette livraison est déjà assignée ********\n"+
+								"-----------------------------------------------------------------");}
 				} else {
 					System.out.println("\n\n *** Delivery not found ***");
 				} 
