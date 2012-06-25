@@ -44,8 +44,11 @@ public class SystemInitialize {
 				"ListDeliveriesAssignedToDriverComponent");
 		new ListDriversAssignedToDelivery(new Integer(104),
 				"ListDriversAssignedToDeliveryComponent");
-		new ListDeliveriesDoneByDriver(new Integer(106),
-		"ListDeliveriesDoneByDriver");
+		new ListDeliveriesDoneByDriver(new Integer(106), 
+				"ListDeliveriesDoneByDriver");
+		
+		//Inst de la classe qui sert à afficher la liste des livraisons qui n'ont pas
+		//été effectuées 
 		
 		new ListDeliveriesNotAssigned(new Integer(107),
 		"ListDeliveriesNotAssigned");		
