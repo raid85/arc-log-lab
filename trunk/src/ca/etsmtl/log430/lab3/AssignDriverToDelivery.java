@@ -25,6 +25,8 @@ import java.util.Observable;
  */
 public class AssignDriverToDelivery extends Communication
 {
+	Driver myDriver = new Driver();
+	Delivery myDelivery = new Delivery();
 	public AssignDriverToDelivery(Integer registrationNumber, String componentName) {
 		super(registrationNumber, componentName);
 	}
@@ -40,8 +42,7 @@ public class AssignDriverToDelivery extends Communication
 	 */
 	public void update(Observable thing, Object notificationNumber) {
 		Menus menu = new Menus();
-		Driver myDriver = new Driver();
-		Delivery myDelivery = new Delivery();
+		
 
 		if (registrationNumber.compareTo((Integer)notificationNumber) == 0) {
 			addToReceiverList("ListDriversComponent");
@@ -66,13 +67,19 @@ public class AssignDriverToDelivery extends Communication
 					/*
 					 * If the selected delivery and driver exist, then complete
 					 * the assignment process.
+					 * 
+					 * UNDER CONSTRUCTION--RAID
 					 */
 					if(myDelivery.getNotAssigned()==true){
 						
+						if(checkConflicts()){						
 						myDelivery.assignDriver(myDriver);
 						myDriver.assignDelivery(myDelivery);
-					}else{
-						
+						}else{
+							System.out.println("-----------------------------------------------------------------" +
+									"\n"+"******** Erreur : Conflit d'horraire ********\n"+
+									"-----------------------------------------------------------------");}
+					}else{						
 						System.out.println("-----------------------------------------------------------------" +
 								"\n"+"******** Erreur : Cette livraison est déjà assignée ********\n"+
 								"-----------------------------------------------------------------");}
@@ -84,4 +91,21 @@ public class AssignDriverToDelivery extends Communication
 			}
 		}
 	}
+
+	private boolean checkConflicts() {
+		// System.out.println(myDelivery.getEstimatedDepartureTime());
+		while( myDriver.getDeliveriesAssigned().getNextDelivery()!=null){
+			
+			
+		}
+		return true;
+	}
+
+
+
+
+
+
+
+
 }
