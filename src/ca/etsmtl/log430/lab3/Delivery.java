@@ -50,10 +50,7 @@ public class Delivery {
 	 * Estimated duration of delivery
 	 */
 	private String estimatedDeliveryDuration;
-	/**
-	 * Estimated factory departure time 
-	 */
-	private String estimatedDepartureTime;
+
 	/**
 	 * List of drivers assigned to the delivery
 	 */
@@ -102,16 +99,15 @@ public class Delivery {
 		return desiredDeliveryTime;
 	}
 
-	//Accesseur pour avoir l'heure de dÃ©part du livreur
-	//En fonction de l'heure d'arrivÃ© et du temps estimÃ© pour la livraison
-	// = heure d'arrivée - temps estimé
-	public float getEstimatedDepartureTime() {		
+	//Accesseur pour avoir l'heure de départ du livreur en base 100	
+	public float getEstimatedDepartureTime100() {return timeHelper();}
+	//Accesseur pour avoir l'heure d'arrivée du livreur en base 100	
+	//public float getDesiredDeliveryTime100() {return desiredDeliveryTime; }
 
-		
-		return timeHelper();
-	}
-
+	//Méthode qui converti le temps de base 60 en base 100, et fait les soustractions nécéssaires pour obtenir l'heure de départ en base 100
+	
 	public float timeHelper (){
+		
 		float hourddt ;
 		float minutesddt ;
 		float houredd ;
