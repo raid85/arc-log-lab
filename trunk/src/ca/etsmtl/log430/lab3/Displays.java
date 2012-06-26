@@ -215,7 +215,7 @@ public class Displays {
 
 		boolean done;
 		Delivery delivery;
-
+		
 		System.out.print("\n");
 		lineCheck(1);
 
@@ -240,12 +240,18 @@ public class Displays {
 		} // while
 
 	}
-
+	
+	/**
+	 * Displays the deliveries have been not assigned in the deliveries list. Displays the same
+	 * information that is listed in the displayDelivery() method listed above.
+	 * 
+	 * @param list
+	 */
 	public void displayDeliveryNotAssignedList(DeliveryList list) {
 
 		boolean done;
 		Delivery delivery;
-
+		
 		System.out.print("\n");
 		lineCheck(1);
 
@@ -261,9 +267,10 @@ public class Displays {
 				done = true;
 
 			} else {
-				if (delivery.getNotAssigned())
+				if (delivery.getNotAssigned()){
 					displayDelivery(delivery);
-				lineCheck(1);
+					lineCheck(1);
+				}
 
 			} // if
 
