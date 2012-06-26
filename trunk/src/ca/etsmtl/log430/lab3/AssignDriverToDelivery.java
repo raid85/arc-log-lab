@@ -42,7 +42,7 @@ public class AssignDriverToDelivery extends Communication
 	 */
 	public void update(Observable thing, Object notificationNumber) {
 		Menus menu = new Menus();
-		
+
 
 		if (registrationNumber.compareTo((Integer)notificationNumber) == 0) {
 			addToReceiverList("ListDriversComponent");
@@ -70,25 +70,20 @@ public class AssignDriverToDelivery extends Communication
 					 * 
 					 * UNDER CONSTRUCTION--RAID
 					 */
-					if (myDelivery.getNotAssigned()) {
-						myDelivery.assignDriver(myDriver);
-						myDriver.assignDelivery(myDelivery);
-					} else {
-						System.out.println("\n-----This delivery is already get assigned-----");
-					}
+
 					if(myDelivery.getNotAssigned()){
-						
+
 						if(checkConflicts()){						
-						myDelivery.assignDriver(myDriver);
-						myDriver.assignDelivery(myDelivery);
+							myDelivery.assignDriver(myDriver);
+							myDriver.assignDelivery(myDelivery);
 						}else{
 							System.out.println("-----------------------------------------------------------------" +
 									"\n"+"******** Erreur : Conflit d'horraire ********\n"+
-									"-----------------------------------------------------------------");}
+							"-----------------------------------------------------------------");}
 					}else{						
 						System.out.println("-----------------------------------------------------------------" +
-								"\n"+"******** Erreur : Cette livraison est dÃ©jÃ  assignÃ©e ********\n"+
-								"-----------------------------------------------------------------");}
+								"\n"+"******** Erreur : Cette livraison est déjà  assignée ********\n"+
+						"-----------------------------------------------------------------");}
 				} else {
 					System.out.println("\n\n *** Delivery not found ***");
 				} 
@@ -99,11 +94,18 @@ public class AssignDriverToDelivery extends Communication
 	}
 
 	private boolean checkConflicts() {
-		// System.out.println(myDelivery.getEstimatedDepartureTime());
-		while( myDriver.getDeliveriesAssigned().getNextDelivery()!=null){
-			
-			
+		boolean conflict = false;
+		
+		System.out.println ("Heure de départ (int) de la livraison choisie...... "+myDelivery.getEstimatedDepartureTime());
+		if(myDriver.getDeliveriesAssigned().getNextDelivery()!=null){
+			myDriver.getDeliveriesAssigned().goToFrontOfList();
+		System.out.println ("Heure de départ (int) de la 1 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery().getEstimatedDepartureTime());
+		System.out.println ("Heure de départ (int) de la 2 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery());
+		System.out.println ("Heure de départ (int) de la 3 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery());
+		//			if(myDelivery.getDesiredDeliveryTime()> myDriver.getDeliveriesAssigned().getNextDelivery().getEstimatedDepartureTime() >myDelivery.getEstimatedDepartureTime())
 		}
+
+
 		return true;
 	}
 

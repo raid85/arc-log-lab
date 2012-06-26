@@ -104,28 +104,31 @@ public class Delivery {
 
 	//Accesseur pour avoir l'heure de départ du livreur
 	//En fonction de l'heure d'arrivé et du temps estimé pour la livraison
-	// = heure d'arrivée - temps estimé
-	public String getEstimatedDepartureTime() {		
+	// = heure d'arriv�e - temps estim�
+	public float getEstimatedDepartureTime() {		
 
-		this.estimatedDepartureTime =String.valueOf(timeHelper()[0])+String.valueOf(timeHelper()[1]);
-
-		return estimatedDepartureTime;
+		
+		return timeHelper();
 	}
 
-	public int[] timeHelper (){
-		int hourddt ;
-		int minutesddt ;
-		int houredd ;
-		int minutesedd ;
-		int[] deptime = new int [2];
+	public float timeHelper (){
+		float hourddt ;
+		float minutesddt ;
+		float houredd ;
+		float minutesedd ;
+		float deptime ;
 		hourddt = Integer.valueOf(String.valueOf(desiredDeliveryTime.charAt(0))+String.valueOf(desiredDeliveryTime.charAt(1)));
-		minutesddt = Integer.valueOf(String.valueOf(desiredDeliveryTime.charAt(2))+String.valueOf(desiredDeliveryTime.charAt(3)));
+		minutesddt = Integer.valueOf(String.valueOf(desiredDeliveryTime.charAt(2))+String.valueOf(desiredDeliveryTime.charAt(3)));		
 		minutesddt = (minutesddt*100)/60 ;
+		
 		houredd = Integer.valueOf(String.valueOf(estimatedDeliveryDuration.charAt(0))+String.valueOf(estimatedDeliveryDuration.charAt(1)));
 		minutesedd = Integer.valueOf(String.valueOf(estimatedDeliveryDuration.charAt(2))+String.valueOf(estimatedDeliveryDuration.charAt(3)));
 		minutesedd = (minutesedd*100)/60 ;
-		deptime[0]=hourddt-houredd ;
-		deptime[1]=((minutesddt-minutesedd)*60)/100 ;
+		
+		float deptimeH=hourddt-houredd ;
+		float deptimeM =((minutesddt-minutesedd))/100 ;
+
+		deptime = deptimeH+deptimeM ;
 		return deptime ;
 
 
