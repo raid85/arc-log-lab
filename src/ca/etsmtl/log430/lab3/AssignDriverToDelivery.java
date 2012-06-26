@@ -70,7 +70,13 @@ public class AssignDriverToDelivery extends Communication
 					 * 
 					 * UNDER CONSTRUCTION--RAID
 					 */
-					if(myDelivery.getNotAssigned()==true){
+					if (myDelivery.getNotAssigned()) {
+						myDelivery.assignDriver(myDriver);
+						myDriver.assignDelivery(myDelivery);
+					} else {
+						System.out.println("\n-----This delivery is already get assigned-----");
+					}
+					if(myDelivery.getNotAssigned()){
 						
 						if(checkConflicts()){						
 						myDelivery.assignDriver(myDriver);
