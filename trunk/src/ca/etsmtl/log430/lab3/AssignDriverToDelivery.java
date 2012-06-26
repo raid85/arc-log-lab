@@ -96,10 +96,10 @@ public class AssignDriverToDelivery extends Communication
 	private boolean checkConflicts() {
 		boolean conflict = false;
 		
-		System.out.println ("Heure de départ (int) de la livraison choisie...... "+myDelivery.getEstimatedDepartureTime());
+		System.out.println ("Heure de départ (int) de la livraison choisie...... "+myDelivery.getEstimatedDepartureTime100());
 		if(myDriver.getDeliveriesAssigned().getNextDelivery()!=null){
 			myDriver.getDeliveriesAssigned().goToFrontOfList();
-		System.out.println ("Heure de départ (int) de la 1 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery().getEstimatedDepartureTime());
+		System.out.println ("Heure de départ (int) de la 1 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery().getEstimatedDepartureTime100());
 		System.out.println ("Heure de départ (int) de la 2 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery());
 		System.out.println ("Heure de départ (int) de la 3 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery());
 		//			if(myDelivery.getDesiredDeliveryTime()> myDriver.getDeliveriesAssigned().getNextDelivery().getEstimatedDepartureTime() >myDelivery.getEstimatedDepartureTime())
