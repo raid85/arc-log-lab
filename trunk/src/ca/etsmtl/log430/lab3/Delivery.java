@@ -99,37 +99,34 @@ public class Delivery {
 		return desiredDeliveryTime;
 	}
 
-	//Accesseur pour avoir l'heure de départ du livreur en base 100	
-	public float getEstimatedDepartureTime100() {return timeHelper();}
-	//Accesseur pour avoir l'heure d'arrivée du livreur en base 100	
-	//public float getDesiredDeliveryTime100() {return desiredDeliveryTime; }
+	//Accesseur pour avoir l'heure de dï¿½part du livreur en base 100	
+	public float getEstimatedDepartureTime100() {return timeHelper(desiredDeliveryTime,estimatedDeliveryDuration);}
+	//Accesseur pour avoir l'heure d'arrivï¿½e du livreur en base 100	
+	public float getDesiredDeliveryTime100() {return timeHelper(desiredDeliveryTime,null); }
+	//Mï¿½thode qui converti le temps de base 60 en base 100, et fait les soustractions nï¿½cï¿½ssaires pour obtenir l'heure de dï¿½part en base 100
+	public float timeHelper (String time1,String time2 ){
 
-	//Méthode qui converti le temps de base 60 en base 100, et fait les soustractions nécéssaires pour obtenir l'heure de départ en base 100
-	
-	public float timeHelper (){
-		
 		float hourddt ;
 		float minutesddt ;
 		float houredd ;
 		float minutesedd ;
-		float deptime ;
-		hourddt = Integer.valueOf(String.valueOf(desiredDeliveryTime.charAt(0))+String.valueOf(desiredDeliveryTime.charAt(1)));
-		minutesddt = Integer.valueOf(String.valueOf(desiredDeliveryTime.charAt(2))+String.valueOf(desiredDeliveryTime.charAt(3)));		
+		float deptime = -1 ;	
+
+		hourddt = Integer.valueOf(String.valueOf(time1.charAt(0))+String.valueOf(time1.charAt(1)));
+		minutesddt = Integer.valueOf(String.valueOf(time1.charAt(2))+String.valueOf(time1.charAt(3)));		
 		minutesddt = (minutesddt*100)/60 ;
-		
-		houredd = Integer.valueOf(String.valueOf(estimatedDeliveryDuration.charAt(0))+String.valueOf(estimatedDeliveryDuration.charAt(1)));
-		minutesedd = Integer.valueOf(String.valueOf(estimatedDeliveryDuration.charAt(2))+String.valueOf(estimatedDeliveryDuration.charAt(3)));
-		minutesedd = (minutesedd*100)/60 ;
-		
-		float deptimeH=hourddt-houredd ;
-		float deptimeM =((minutesddt-minutesedd))/100 ;
+		if(time2 == null){deptime = hourddt + (minutesddt/100) ;}
+		else {
+			houredd = Integer.valueOf(String.valueOf(time2.charAt(0))+String.valueOf(time2.charAt(1)));
+			minutesedd = Integer.valueOf(String.valueOf(time2.charAt(2))+String.valueOf(time2.charAt(3)));
+			minutesedd = (minutesedd*100)/60 ;
 
-		deptime = deptimeH+deptimeM ;
-		return deptime ;
+			float deptimeH=hourddt-houredd ;
+			float deptimeM =((minutesddt-minutesedd))/100 ;
 
+			deptime = deptimeH+deptimeM ;}
 
-
-	}
+		return deptime ; }
 
 	public void setEstimatedDeliveryDuration(String duration) {
 		this.estimatedDeliveryDuration = duration;

@@ -75,4 +75,21 @@ public class List {
 	void goToFrontOfList() {
 		vectorIndex = 0;
 	}
+
+	//Rajouts de services Riad C.
+	int ListSize() {
+		return itemList.size();
+	}
+	void pointNext() {
+		vectorIndex ++;
+	}
+	public Object getItemAtCurrentPosition() {
+		Object listItem;
+		try {
+			listItem = itemList.get(vectorIndex);
+			return (listItem);
+		} catch (ArrayIndexOutOfBoundsException error) {
+			return ((Object) null);
+		}
+	}
 }
