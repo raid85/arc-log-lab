@@ -73,17 +73,30 @@ public class AssignDriverToDelivery extends Communication
 
 					if(myDelivery.getNotAssigned()){
 
-						if(checkConflicts()){						
+						if(checkConflicts()){
+							
 							myDelivery.assignDriver(myDriver);
 							myDriver.assignDelivery(myDelivery);
+							System.out.println ("Heure de dï¿½part (int) de la livraison choisie...... "+myDelivery.getEstimatedDepartureTime100());
+							System.out.println("Heure de darrivee (int) de la livraison choisie..... "+myDelivery.getDesiredDeliveryTime100());
+							System.out.println("LIST SIZE"+myDriver.getDeliveriesAssigned().getListSize());
+							myDriver.getDeliveriesAssigned().goToFrontOfList();
+							for (int i=0; i<myDriver.getDeliveriesAssigned().getListSize();i++){
+								
+								System.out.println("Heure de depart de la  "+i+"  livraison  : "+myDriver.getDeliveriesAssigned().getDelivery().getEstimatedDepartureTime100());
+								System.out.println("Heure d'arrivÃ©e de la  "+i+"  livraison  : "+myDriver.getDeliveriesAssigned().getDelivery().getDesiredDeliveryTime100());
+								myDriver.getDeliveriesAssigned().pointNext();
+							
+							}
+							
 						}else{
 							System.out.println("-----------------------------------------------------------------" +
 									"\n"+"******** Erreur : Conflit d'horraire ********\n"+
-							"-----------------------------------------------------------------");}
+									"-----------------------------------------------------------------");}
 					}else{						
 						System.out.println("-----------------------------------------------------------------" +
-								"\n"+"******** Erreur : Cette livraison est déjà  assignée ********\n"+
-						"-----------------------------------------------------------------");}
+								"\n"+"******** Erreur : Cette livraison est dï¿½jï¿½ assignï¿½e ********\n"+
+								"-----------------------------------------------------------------");}
 				} else {
 					System.out.println("\n\n *** Delivery not found ***");
 				} 
@@ -95,15 +108,10 @@ public class AssignDriverToDelivery extends Communication
 
 	private boolean checkConflicts() {
 		boolean conflict = false;
+
 		
-		System.out.println ("Heure de départ (int) de la livraison choisie...... "+myDelivery.getEstimatedDepartureTime100());
-		if(myDriver.getDeliveriesAssigned().getNextDelivery()!=null){
-			myDriver.getDeliveriesAssigned().goToFrontOfList();
-		System.out.println ("Heure de départ (int) de la 1 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery().getEstimatedDepartureTime100());
-		System.out.println ("Heure de départ (int) de la 2 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery());
-		System.out.println ("Heure de départ (int) de la 3 livraison du carnet...... "+myDriver.getDeliveriesAssigned().getNextDelivery());
+
 		//			if(myDelivery.getDesiredDeliveryTime()> myDriver.getDeliveriesAssigned().getNextDelivery().getEstimatedDepartureTime() >myDelivery.getEstimatedDepartureTime())
-		}
 
 
 		return true;

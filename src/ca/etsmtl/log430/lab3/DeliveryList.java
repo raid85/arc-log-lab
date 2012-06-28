@@ -119,5 +119,13 @@ public class DeliveryList extends List {
 		} // while
 		return(returnValue);
 	}
+	//Ajout de services Riad C.
+	public int getListSize (){
+		return ListSize();
+	}
+	public Delivery getDelivery() {
+		return (Delivery) getItemAtCurrentPosition();
+	}
+	
 	
 } // DeliveryList
