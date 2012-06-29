@@ -103,7 +103,11 @@ public class Delivery {
 	public float getEstimatedDepartureTime100() {return timeHelper(desiredDeliveryTime,estimatedDeliveryDuration);}
 	//Accesseur pour avoir l'heure d'arrivï¿½e du livreur en base 100	
 	public float getDesiredDeliveryTime100() {return timeHelper(desiredDeliveryTime,null); }
-	//Mï¿½thode qui converti le temps de base 60 en base 100, et fait les soustractions nï¿½cï¿½ssaires pour obtenir l'heure de dï¿½part en base 100
+	//Accesseur pour avoir l'heure d'arrivï¿½e du livreur en base 100	
+	public float getDeliveryDurationTime100() {return timeHelper(estimatedDeliveryDuration,null); }
+	
+	
+	//Méthode qui converti le temps de base 60 en base 100, et fait les soustractions nécéssaires pour obtenir l'heure  en base 100
 	public float timeHelper (String time1,String time2 ){
 
 		float hourddt ;
@@ -115,6 +119,7 @@ public class Delivery {
 		hourddt = Integer.valueOf(String.valueOf(time1.charAt(0))+String.valueOf(time1.charAt(1)));
 		minutesddt = Integer.valueOf(String.valueOf(time1.charAt(2))+String.valueOf(time1.charAt(3)));		
 		minutesddt = (minutesddt*100)/60 ;
+		
 		if(time2 == null){deptime = hourddt + (minutesddt/100) ;}
 		else {
 			houredd = Integer.valueOf(String.valueOf(time2.charAt(0))+String.valueOf(time2.charAt(1)));
