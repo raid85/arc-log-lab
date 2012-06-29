@@ -27,6 +27,10 @@ public class AssignDriverToDelivery extends Communication
 {
 	Driver myDriver = new Driver();
 	Delivery myDelivery = new Delivery();
+	static final float MAX_HOURS_SENIORS = 8 ;
+	static final float MAX_HOURS_JUNIORS = 10 ;
+
+
 	public AssignDriverToDelivery(Integer registrationNumber, String componentName) {
 		super(registrationNumber, componentName);
 	}
@@ -73,30 +77,22 @@ public class AssignDriverToDelivery extends Communication
 
 					if(myDelivery.getNotAssigned()){
 
-						if(checkConflicts()){
-							
-							myDelivery.assignDriver(myDriver);
-							myDriver.assignDelivery(myDelivery);
-							System.out.println ("Heure de dï¿½part (int) de la livraison choisie...... "+myDelivery.getEstimatedDepartureTime100());
-							System.out.println("Heure de darrivee (int) de la livraison choisie..... "+myDelivery.getDesiredDeliveryTime100());
-							System.out.println("LIST SIZE"+myDriver.getDeliveriesAssigned().getListSize());
-							myDriver.getDeliveriesAssigned().goToFrontOfList();
-							for (int i=0; i<myDriver.getDeliveriesAssigned().getListSize();i++){
-								
-								System.out.println("Heure de depart de la  "+i+"  livraison  : "+myDriver.getDeliveriesAssigned().getDelivery().getEstimatedDepartureTime100());
-								System.out.println("Heure d'arrivÃ©e de la  "+i+"  livraison  : "+myDriver.getDeliveriesAssigned().getDelivery().getDesiredDeliveryTime100());
-								myDriver.getDeliveriesAssigned().pointNext();
-							
-							}
-							
+						if(!checkConflicts()){
+							if(!checkMaxHours()){
+								myDelivery.assignDriver(myDriver);
+								myDriver.assignDelivery(myDelivery);
+							}else{System.out.println("-----------------------------------------------------------------" +
+									"\n"+"******** Erreur : le chauffeur  "+myDriver.getFirstName()+" "+myDriver.getLastName()+"********\n"+
+							"******** à atteint son nombre d'heures maximum permis *****");}
+
 						}else{
 							System.out.println("-----------------------------------------------------------------" +
 									"\n"+"******** Erreur : Conflit d'horraire ********\n"+
-									"-----------------------------------------------------------------");}
+							"-----------------------------------------------------------------");}
 					}else{						
 						System.out.println("-----------------------------------------------------------------" +
-								"\n"+"******** Erreur : Cette livraison est dï¿½jï¿½ assignï¿½e ********\n"+
-								"-----------------------------------------------------------------");}
+								"\n"+"******** Erreur : Cette livraison est déjà assignée ********\n"+
+						"-----------------------------------------------------------------");}
 				} else {
 					System.out.println("\n\n *** Delivery not found ***");
 				} 
@@ -107,17 +103,54 @@ public class AssignDriverToDelivery extends Communication
 	}
 
 	private boolean checkConflicts() {
+
 		boolean conflict = false;
+		float chosenDeliveryDepartureTime = myDelivery.getEstimatedDepartureTime100();
+		float chosenDeliveryArrivalTime = myDelivery.getDesiredDeliveryTime100();
+		float padDeliveryDepartureTime =0 ;
+		float padDeliveryArrivalTime = 0;
 
-		
+		myDriver.getDeliveriesAssigned().goToFrontOfList();
+		if(myDriver.getDeliveriesAssigned().getListSize()!=0){
+			for (int i=0; i<myDriver.getDeliveriesAssigned().getListSize();i++){
 
-		//			if(myDelivery.getDesiredDeliveryTime()> myDriver.getDeliveriesAssigned().getNextDelivery().getEstimatedDepartureTime() >myDelivery.getEstimatedDepartureTime())
+				padDeliveryDepartureTime = myDriver.getDeliveriesAssigned().getDelivery().getEstimatedDepartureTime100() ;
+				padDeliveryArrivalTime = myDriver.getDeliveriesAssigned().getDelivery().getDesiredDeliveryTime100() ;
+				if(( padDeliveryDepartureTime < chosenDeliveryDepartureTime  && chosenDeliveryDepartureTime  < padDeliveryArrivalTime) || 
+						(padDeliveryDepartureTime < chosenDeliveryArrivalTime  && chosenDeliveryArrivalTime  < padDeliveryArrivalTime) || 
+						(chosenDeliveryArrivalTime > padDeliveryArrivalTime && chosenDeliveryDepartureTime < padDeliveryDepartureTime )
+				){conflict = true ;}
+				myDriver.getDeliveriesAssigned().pointNext();
 
+			}		
+		}
 
-		return true;
+		return conflict;
 	}
 
+	private boolean checkMaxHours() {
 
+		boolean maxHoursReached = false ;
+		float driverTotalHours = 0 ;
+		String driverType = myDriver.getType() ;
+		
+		myDriver.getDeliveriesAssigned().goToFrontOfList();
+		if(myDriver.getDeliveriesAssigned().getListSize()!=0){
+			for(int i=0 ; i<myDriver.getDeliveriesAssigned().getListSize();i++){
+				
+				driverTotalHours = driverTotalHours + (myDriver.getDeliveriesAssigned().getDelivery().getDeliveryDurationTime100());
+						
+				myDriver.getDeliveriesAssigned().pointNext();
+			}
+		}
+		
+	
+		if((driverType.compareTo("SNR")==0) && (driverTotalHours + myDelivery.getDeliveryDurationTime100()) > MAX_HOURS_SENIORS){maxHoursReached = true ;}
+		else if ((driverType.compareTo("JNR")==0) && (driverTotalHours + myDelivery.getDeliveryDurationTime100()) > MAX_HOURS_JUNIORS){maxHoursReached = true;}			
+	
+
+		return maxHoursReached; 
+	}
 
 
 
