@@ -70,10 +70,7 @@ public class AssignDriverToDelivery extends Communication
 				if (myDelivery != null)	{	
 					/*
 					 * If the selected delivery and driver exist, then complete
-					 * the assignment process.
-					 * 
-					 * UNDER CONSTRUCTION--RAID
-					 */
+					 * the assignment process. */
 
 					if(myDelivery.getNotAssigned()){
 
@@ -83,7 +80,7 @@ public class AssignDriverToDelivery extends Communication
 								myDriver.assignDelivery(myDelivery);
 							}else{System.out.println("-----------------------------------------------------------------" +
 									"\n"+"******** Erreur : le chauffeur  "+myDriver.getFirstName()+" "+myDriver.getLastName()+"********\n"+
-							"******** à atteint son nombre d'heures maximum permis *****");}
+							"******** ï¿½ atteint son nombre d'heures maximum permis *****");}
 
 						}else{
 							System.out.println("-----------------------------------------------------------------" +
@@ -91,7 +88,7 @@ public class AssignDriverToDelivery extends Communication
 							"-----------------------------------------------------------------");}
 					}else{						
 						System.out.println("-----------------------------------------------------------------" +
-								"\n"+"******** Erreur : Cette livraison est déjà assignée ********\n"+
+								"\n"+"******** Erreur : Cette livraison est dï¿½jï¿½ assignï¿½e ********\n"+
 						"-----------------------------------------------------------------");}
 				} else {
 					System.out.println("\n\n *** Delivery not found ***");
